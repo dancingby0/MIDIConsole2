@@ -1,0 +1,12 @@
+// 音符与频率(Hz)对应表
+enum {
+	A2 = 21, A2sharp = 22, B2 = 23,
+	C1 = 24, C1sharp = 25, D1 = 26, D1sharp = 27, E1 = 28, F1 = 29, F1sharp = 30, G1 = 31, G1sharp = 32, A1 = 33, A1sharp = 34, B1 = 35,
+	C = 36, Csharp = 37, D = 38, Dsharp = 39, E = 40, F = 41, Fsharp = 42, G = 43, Gsharp = 44, A = 45, Asharp = 46, B = 47,
+	c = 48, csharp = 49, d = 50, dsharp = 51, e = 52, f = 53, fsharp = 54, g = 55, gsharp = 56, a = 57, asharp = 58, b = 59,
+	c1 = 60, c1sharp = 61, d1 = 62, d1sharp = 63, e1 = 64, f1 = 65, f1sharp = 66, g1 = 67, g1sharp = 68, a1 = 69, a1sharp = 70, b1 = 71,
+	c2 = 72, c2sharp = 73, d2 = 74, d2sharp = 75, e2 = 76, f2 = 77, f2sharp = 78, g2 = 79, g2sharp = 80, a2 = 81, a2sharp = 82, b2 = 83,
+	c3 = 84, c3sharp = 85, d3 = 86, d3sharp = 87, e3 = 88, f3 = 89, f3sharp = 90, g3 = 91, g3sharp = 92, a3 = 93, a3sharp = 94, b3 = 95,
+	c4 = 96, c4sharp = 97, d4 = 98, d4sharp = 99, e4 = 100, f4 = 101, f4sharp = 102, g4 = 103, g4sharp = 104, a4 = 105, a4sharp = 106, b4 = 107,
+	c5 = 108
+};

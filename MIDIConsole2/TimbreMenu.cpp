@@ -8,13 +8,14 @@ int TimbreMenu::id_pointer = 0;
 
 // 音色菜单主程式
 void TimbreMenu::runTimbre() {
-
-	switch (Menu::getKey())
-	{
+	
+	switch (Menu::getKey()){
+	// 退出
 	case 'Q':
 		Menu::setState(SETTING);
 		Menu::showSetting();
 		break;
+	// 向左翻页音色表
 	case VK_LEFT:
 		if (TimbreMenu::page > 0) {
 			TimbreMenu::page--;
@@ -23,6 +24,7 @@ void TimbreMenu::runTimbre() {
 			Sleep(100);
 		};
 		break;
+	// 向右翻页音色表
 	case VK_RIGHT:
 		if (TimbreMenu::page < 5) {
 			TimbreMenu::page++;
@@ -31,6 +33,7 @@ void TimbreMenu::runTimbre() {
 			Sleep(100);
 		};
 		break;
+	// 向上选择音色
 	case VK_UP:
 		if (TimbreMenu::id_pointer > TimbreMenu::page * 20) {
 			TimbreMenu::id_pointer--;
@@ -38,6 +41,7 @@ void TimbreMenu::runTimbre() {
 			Sleep(50);
 		}
 		break;
+	// 向下选择音色
 	case VK_DOWN:
 		if (TimbreMenu::id_pointer < TimbreMenu::page * 20 + 19 and TimbreMenu::id_pointer < Midi::getInstrumentList()->size() - 1) {
 			TimbreMenu::id_pointer++;
@@ -45,6 +49,7 @@ void TimbreMenu::runTimbre() {
 			Sleep(50);
 		}
 		break;
+	// 保存设置
 	case VK_RETURN:
 		Midi::setTimbre(TimbreMenu::id_pointer);
 		Menu::setState(SETTING);

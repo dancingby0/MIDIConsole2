@@ -138,15 +138,12 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Midi.h" />
     <ClInclude Include="ModeMenu.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="TimbreMenu.h" />
     <ClInclude Include="VolumeMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="timbre.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="MIDIConsole2.rc" />
+    <Text Include="音色频率对应表.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

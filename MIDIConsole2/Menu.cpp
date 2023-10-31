@@ -1,25 +1,27 @@
 #include "Menu.h"
 
 
-
+// 默认设置
 bool Menu::flag = false;
 int Menu::state = QUIT;
 char Menu::input = 0;
 
-
-
-
+// 获取玩家按下的键
+int Menu::getKey() {
+	return Menu::input;
+}
 
 // 主菜单程式运行
 void Menu::start() {
 
 	Menu::flag = true;
-	Menu::state = MENU;
-	Midi::initialMidi();
-	Menu::showMenu();
+	Menu::state = MENU; // 菜单状态设置为"主菜单"
+	Midi::initialMidi(); // 初始化Midi电子琴
+	Menu::showMenu(); 
 	while (Menu::flag) {
-		Menu::changeMenu();
-		Menu::detectKeyboardInput();
+		Menu::detectKeyboardInput(); // 探测键的输入
+		Menu::changeMenu(); // 更改菜单的状态
+		Sleep(10); // 设定略微的延时
 	}
 }
 
@@ -68,15 +70,7 @@ void Menu::detectKeyboardInput() {
 			Menu::input = key;
 		}
 	}
-
 }
-
-// 获取玩家按下的键
-int Menu::getKey() {
-	return Menu::input;
-}
-
-
 
 // 通过input操作主菜单
 void Menu::runMenu() {
@@ -101,7 +95,6 @@ void Menu::runMenu() {
 		break;
 	}
 }
-
 
 // 展示菜单
 void Menu::showMenu() {
@@ -146,7 +139,6 @@ void Menu::runSetting() {
 	}
 
 }
-
 
 // 退出程式
 void Menu::quit() {

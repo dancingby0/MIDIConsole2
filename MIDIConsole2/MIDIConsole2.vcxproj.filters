@@ -56,18 +56,13 @@
     <ClInclude Include="ModeMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="timbre.txt">
       <Filter>资源文件</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="MIDIConsole2.rc">
+    <Text Include="音色频率对应表.txt">
       <Filter>资源文件</Filter>
-    </ResourceCompile>
+    </Text>
   </ItemGroup>
 </Project>
