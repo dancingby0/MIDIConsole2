@@ -5,9 +5,14 @@
 #include <string>
 #include <Windows.h>
 #include <map>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <map>
 #pragma comment(lib,"winmm.lib")
 
-// 音色数据
+#include "Menu.h"
+
 struct InstrumentData {
 	int id;
 	std::string name;
@@ -28,24 +33,19 @@ public:
 	static int getMode();
 	static void setMode(int mode);
 private:
-	// 音阶数据
 	static const int Major[7];
 	static const int Minor[7];
-	// 调式表
 	static const std::array<int, 14> MODE;
-	// 调式
 	static int mode;
-	// 音色表
 	static std::vector<InstrumentData> InstrumentList;
-	// 玩家键表
 	static std::vector<int> KeyList;
-	// 播放声音池
 	static std::vector<int> SoundList;
+	static std::map<int, int>KeyMap;
+
 	static bool flag;
 	static int timbre;
 	static int volume;
 	static HMIDIOUT handle;
-	static std::map<int, int>KeyMap;
 
 	static void operateKey();
 	static void detectKeyboardInput();

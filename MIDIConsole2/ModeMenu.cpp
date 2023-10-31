@@ -1,8 +1,4 @@
 #include "ModeMenu.h"
-#include "Menu.h"
-#include "Midi.h"
-#include <iostream>
-#include <Windows.h>
 
 
 int ModeMenu::mode_pointer = Midi::getMode();

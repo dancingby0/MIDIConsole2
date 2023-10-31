@@ -1,10 +1,4 @@
-// -*- coding:utf-8 -*-
 #include "Midi.h"
-#include "Menu.h"
-#include <iostream>
-#include <map>
-#include <fstream>
-#include <sstream>
 
 // 音符与频率(Hz)对应表
 enum {

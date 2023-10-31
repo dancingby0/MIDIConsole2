@@ -1,9 +1,5 @@
-
 #include "VolumeMenu.h"
-#include "Menu.h"
-#include "Midi.h"
-#include <iostream>
-#include <Windows.h>
+
 
 int VolumeMenu::volume = Midi::getVolume();
 

@@ -1,12 +1,4 @@
 #include "Menu.h"
-#include "TimbreMenu.h"
-#include "Midi.h"
-#include "VolumeMenu.h"
-#include "ModeMenu.h"
-
-#include <Windows.h>
-#include <iostream>
-
 
 
 

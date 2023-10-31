@@ -1,8 +1,4 @@
 #include "TimbreMenu.h"
-#include "Midi.h"
-#include "Menu.h"
-#include <iostream>
-#include <Windows.h>
 
 
 

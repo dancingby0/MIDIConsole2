@@ -1,6 +1,11 @@
 #pragma once
-#ifndef MENU_H
-#define MENU_H
+#include <Windows.h>
+#include <iostream>
+
+#include "TimbreMenu.h"
+#include "Midi.h"
+#include "VolumeMenu.h"
+#include "ModeMenu.h"
 
 const enum STATE {
 	QUIT, MENU, SETTING, TIMBRE, VOLUME, MODE, MIDI
@@ -28,4 +33,3 @@ private:
 
 	static void quit();
 };
-#endif
