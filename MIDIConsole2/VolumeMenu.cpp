@@ -43,3 +43,4 @@ void VolumeMenu::showVolumeMenu() {
 	std::cout << "按q退出 按↑提高音量 按↓降低音量 按Enter保存音量设置" << std::endl;
 	std::cout << "目前音量为:" << VolumeMenu::volume << std::endl;
 }
+
