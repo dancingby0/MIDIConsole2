@@ -10,6 +10,7 @@
 
 class VolumeMenu{
 public:
+	static void setVolume(int volume);
 	static void runVolumeMenu();
 	static void showVolumeMenu();
 private:

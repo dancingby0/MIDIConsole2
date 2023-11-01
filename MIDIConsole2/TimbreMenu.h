@@ -14,6 +14,7 @@ class TimbreMenu{
 public:
 	static void runTimbre();
 	static void showTimbre();
+	static void setTimbre(int);
 
 private:
 	static int page;

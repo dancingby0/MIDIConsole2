@@ -134,13 +134,27 @@ void Midi::initialTimbre() {
 			int id = 0;
 			std::string name;
 			std::string Chinese_name;
-			// 定义正则表达式模式，匹配id,name和Chinese_name
-			std::regex pattern("(\\d+) ([A-Za-z\\s]+?) ([^A-Za-z0-9\\s]+)");
+			int state = 0;
 
-			std::smatch match;
-
-			if (std::regex_search(line, match, pattern)and match.size()==3) {
-				Midi::InstrumentList.push_back({ std::stoi(match[1]),name = match[2],Chinese_name = match[3] });
+			for (int i = 0; i < line.size(); i++) {
+				if ('0' <= line[i] and line[i] <= '9' and state == 0) {
+					id = id * 10 + (line[i] - '0');
+				}
+				else {
+					state = 1;
+				}
+				if (state == 1 and ('A' <= line[i] and 'Z' >= line[i] or 'a' <= line[i] and 'z' >= line[i]) or line[i] == ' ' or line[i] == '(' or line[i] == ')' or line[i] <= '9' and '0' <= line[i]) {
+					name += line[i];
+				}
+				else if (state == 1) {
+					state = 2;
+				}
+				if (state == 2) {
+					Chinese_name += line[i];
+				}
+			}
+			if (state == 2) {
+				Midi::InstrumentList.push_back({ id, name, Chinese_name });
 			}
 		}
 		inputFile.close();

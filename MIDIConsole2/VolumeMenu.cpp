@@ -3,6 +3,9 @@
 
 int VolumeMenu::volume;
 
+void VolumeMenu::setVolume(int volume) {
+	VolumeMenu::volume = volume;
+}
 // 响度菜单主程式
 void VolumeMenu::runVolumeMenu() {
 	switch (Menu::getKey()) {
@@ -38,7 +41,6 @@ void VolumeMenu::runVolumeMenu() {
 
 // 显示响度菜单
 void VolumeMenu::showVolumeMenu() {
-	VolumeMenu::volume = Midi::getVolume();
 	system("cls");
 	std::cout << "MIDI电子琴设置:" << std::endl;
 	std::cout << "按q退出 按↑提高音量 按↓降低音量 按Enter保存音量设置" << std::endl;

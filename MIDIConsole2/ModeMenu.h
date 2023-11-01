@@ -14,6 +14,7 @@
 class ModeMenu{
 public:
 
+	static void setMode(int);
 	static void showModeMenu();
 	static void runModeMenu();
 private:

@@ -17,6 +17,9 @@ void Menu::start() {
 	Menu::flag = true;
 	Menu::state = MENU; // 菜单状态设置为"主菜单"
 	Midi::initialMidi(); // 初始化Midi电子琴
+	VolumeMenu::setVolume(Midi::getVolume());
+	TimbreMenu::setTimbre(Midi::getTimbre());
+	ModeMenu::setMode(Midi::getMode());
 	Menu::showMenu(); 
 	while (Menu::flag) {
 		Menu::detectKeyboardInput(); // 探测键的输入
