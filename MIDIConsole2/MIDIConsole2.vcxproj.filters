@@ -74,4 +74,9 @@
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="MIDIConsole2.exe">
+      <Filter>源文件</Filter>
+    </None>
+  </ItemGroup>
 </Project>

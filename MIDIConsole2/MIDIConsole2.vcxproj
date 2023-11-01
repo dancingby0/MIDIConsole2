@@ -148,6 +148,9 @@
     <Text Include="timbre.txt" />
     <Text Include="音色频率对应表.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="MIDIConsole2.exe" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
