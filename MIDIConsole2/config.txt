@@ -1,0 +1,3 @@
+timbre:60
+volume:123
+mode:6

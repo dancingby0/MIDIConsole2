@@ -39,6 +39,9 @@
     <ClCompile Include="ModeMenu.cpp">
       <Filter>源文件\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="MidiConfig.cpp">
+      <Filter>源文件\Midi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Midi.h">
@@ -56,12 +59,18 @@
     <ClInclude Include="ModeMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MidiConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="timbre.txt">
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="音色频率对应表.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="config.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

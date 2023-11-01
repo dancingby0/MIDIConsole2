@@ -1,12 +1,17 @@
 #pragma once
+
+#ifndef MODEMENU_H
+#define MODEMENU_H
+
+
+
 #include <iostream>
 #include <Windows.h>
 
 #include "Menu.h"
 #include "Midi.h"
 
-class ModeMenu
-{
+class ModeMenu{
 public:
 
 	static void showModeMenu();
@@ -18,3 +23,4 @@ private:
 
 };
 
+#endif // !MODEMENU_H

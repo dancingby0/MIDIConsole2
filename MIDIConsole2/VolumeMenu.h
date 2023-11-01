@@ -1,15 +1,19 @@
 #pragma once
+#ifndef VOLUMEMENU_H
+#define VOLUMEMENU_H
+
 #include <iostream>
 #include <Windows.h>
 
 #include "Menu.h"
 #include "Midi.h"
 
-class VolumeMenu
-{
+class VolumeMenu{
 public:
 	static void runVolumeMenu();
 	static void showVolumeMenu();
 private:
 	static int volume;
 };
+
+#endif // !VOLUMEMENU_H

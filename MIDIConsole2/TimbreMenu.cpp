@@ -3,8 +3,8 @@
 
 
 // 指明当前音色表的页数
-int TimbreMenu::page = 0;
-int TimbreMenu::id_pointer = 0;
+int TimbreMenu::page;
+int TimbreMenu::id_pointer;
 
 // 音色菜单主程式
 void TimbreMenu::runTimbre() {
@@ -62,6 +62,8 @@ void TimbreMenu::runTimbre() {
 
 // 显示音色菜单界面
 void TimbreMenu::showTimbre() {
+	TimbreMenu::page = Midi::getTimbre() / 20;
+	TimbreMenu::id_pointer = Midi::getTimbre() % 20;
 	system("cls");
 	std::cout << "MIDI电子琴设置:" << std::endl;
 	std::cout << "键入id以选择你的音色 键入q表退出当前界面 按←向前翻页,按→向后翻页 按↑和↓向上向下选中音色 按Enter选定音色" << std::endl;

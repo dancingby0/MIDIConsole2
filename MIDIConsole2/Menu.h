@@ -1,4 +1,7 @@
 #pragma once
+#ifndef MENU_H
+#define MENU_H
+
 #include <Windows.h>
 #include <iostream>
 
@@ -8,7 +11,7 @@
 #include "ModeMenu.h"
 
 const enum STATE {
-	QUIT, MENU, SETTING, TIMBRE, VOLUME, MODE, MIDI
+	QUIT, MENU, SETTING, TIMBRE, VOLUME, MODE, MIDI,SAVE
 };
 
 class Menu {
@@ -24,6 +27,7 @@ private:
 	static char input; // 玩家的输入
 	static int state;// 标志程式的状态
 
+	static void runSAVE();
 	static void detectKeyboardInput();
 	static void changeMenu();
 	static void runMenu();
@@ -33,3 +37,5 @@ private:
 
 	static void quit();
 };
+
+#endif // !MENU_H

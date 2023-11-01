@@ -1,4 +1,8 @@
 #pragma once
+#ifndef TIMBREMENU_H
+#define TIMBREMENU_H
+
+
 #include <string>
 #include <iostream>
 #include <Windows.h>
@@ -6,8 +10,7 @@
 #include "Midi.h"
 #include "Menu.h"
 
-class TimbreMenu
-{
+class TimbreMenu{
 public:
 	static void runTimbre();
 	static void showTimbre();
@@ -23,3 +26,4 @@ private:
 
 };
 
+#endif // !TIMBREMENU_H

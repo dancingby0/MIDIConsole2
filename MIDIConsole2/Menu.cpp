@@ -109,8 +109,19 @@ void Menu::showSetting() {
 	system("cls");
 	std::cout << "MIDI电子琴设置:" << std::endl;
 	std::cout << "按下数字9退出" << std::endl;
-	std::cout << "A:音色,B:响度 C:调式" << std::endl;
+	std::cout << "A:音色,B:响度 C:调式 D:保存当前设置" << std::endl;
 	std::cout << "请按下你的按键:";
+}
+
+void Menu::runSAVE() {
+	Midi::writeConfigFile();
+	system("cls");
+	std::cout << "成功保存当前设置为:" << std::endl;
+	std::cout << "音色 : " << Midi::getTimbre() << std::endl;
+	std::cout << "响度 : " << Midi::getVolume() << std::endl;
+	std::cout << "调式 : " << Midi::getMode() << std::endl;
+	Sleep(2000);
+	Menu::showSetting();
 }
 
 // 运行主设置
@@ -135,6 +146,10 @@ void Menu::runSetting() {
 	case 'C':
 		Menu::state = MODE;
 		ModeMenu::showModeMenu();
+		break;
+
+	case 'D':
+		Menu::runSAVE();
 		break;
 	}
 

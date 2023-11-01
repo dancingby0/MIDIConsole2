@@ -1,7 +1,7 @@
 #include "ModeMenu.h"
 
 // 获取调式的菜单指向位置
-int ModeMenu::mode_pointer = Midi::getMode();
+int ModeMenu::mode_pointer;
 
 // 根据玩家输入更改调式
 void ModeMenu::runModeMenu() {
@@ -44,6 +44,7 @@ void ModeMenu::runModeMenu() {
 
 // 展示调式菜单
 void ModeMenu::showModeMenu() {
+	ModeMenu::mode_pointer = Midi::getMode();
 	system("cls");
 	std::cout << "调式设置:" << std::endl;
 	std::cout << "按q返回,按Enter保存,↑向上选择,↓向下选择" << std::endl;

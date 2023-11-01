@@ -130,6 +130,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Midi.cpp" />
+    <ClCompile Include="MidiConfig.cpp" />
     <ClCompile Include="ModeMenu.cpp" />
     <ClCompile Include="TimbreMenu.cpp" />
     <ClCompile Include="VolumeMenu.cpp" />
@@ -137,11 +138,13 @@
   <ItemGroup>
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Midi.h" />
+    <ClInclude Include="MidiConfig.h" />
     <ClInclude Include="ModeMenu.h" />
     <ClInclude Include="TimbreMenu.h" />
     <ClInclude Include="VolumeMenu.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="config.txt" />
     <Text Include="timbre.txt" />
     <Text Include="音色频率对应表.txt" />
   </ItemGroup>
