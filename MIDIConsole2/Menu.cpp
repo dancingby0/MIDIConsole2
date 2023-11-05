@@ -20,7 +20,7 @@ void Menu::start() {
 	VolumeMenu::setVolume(Midi::getVolume());
 	TimbreMenu::setTimbre(Midi::getTimbre());
 	ModeMenu::setMode(Midi::getMode());
-	Menu::showMenu(); 
+	Menu::showMenu();
 	while (Menu::flag) {
 		Menu::detectKeyboardInput(); // 探测键的输入
 		Menu::changeMenu(); // 更改菜单的状态
@@ -118,11 +118,23 @@ void Menu::showSetting() {
 
 void Menu::runSAVE() {
 	Midi::writeConfigFile();
+	
+	// 对调式进行文本推理
+	std::string tmp;
+	if (MidiConfig::getMode() < 7) {
+		tmp = MidiConfig::getMode() + 'A';
+		tmp += "大调式";
+	}
+	else {
+		tmp = MidiConfig::getMode() - 7 + 'A';
+		tmp += "小调式";
+	}
+	
 	system("cls");
 	std::cout << "成功保存当前设置为:" << std::endl;
-	std::cout << "音色 : " << Midi::getTimbre() << std::endl;
+	std::cout << "音色 : " << Midi::getInstrumentList()->at(Midi::getTimbre()).Chinese_name << std::endl;
 	std::cout << "响度 : " << Midi::getVolume() << std::endl;
-	std::cout << "调式 : " << Midi::getMode() << std::endl;
+	std::cout << "调式 : " << tmp << std::endl;
 	Sleep(2000);
 	Menu::showSetting();
 }

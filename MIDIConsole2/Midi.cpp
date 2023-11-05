@@ -134,21 +134,30 @@ void Midi::initialTimbre() {
 			int id = 0;
 			std::string name;
 			std::string Chinese_name;
-			int state = 0;
+			int state = 0;// 读取一行时初始状态(读取id)
 
 			for (int i = 0; i < line.size(); i++) {
+				
+				// 若id在数字范围内并且时状态0时,读取
 				if ('0' <= line[i] and line[i] <= '9' and state == 0) {
 					id = id * 10 + (line[i] - '0');
 				}
-				else {
+				// 若不是数字(空格),且状态位于0(读取数字时),则转换为1(读取name)
+				else if(state==0){
 					state = 1;
 				}
-				if (state == 1 and ('A' <= line[i] and 'Z' >= line[i] or 'a' <= line[i] and 'z' >= line[i]) or line[i] == ' ' or line[i] == '(' or line[i] == ')' or line[i] <= '9' and '0' <= line[i]) {
+				// 若状态为name,且为 字母 或 空格 或 大括号 或 小括号 或 数字 时读为name
+				if (state == 1 // 状态1
+					and ('A' <= line[i] and 'Z' >= line[i] or 'a' <= line[i] and 'z' >= line[i]  // 字母
+						or line[i] == ' ' or line[i] == '(' or line[i] == ')'  // 其他符号
+						or line[i] <= '9' and '0' <= line[i])) {
 					name += line[i];
 				}
+				// 否则(若状态为1),读的是其他字符(汉字),状态为2(读取汉字)
 				else if (state == 1) {
 					state = 2;
 				}
+				// 若状态为2,则读取中文
 				if (state == 2) {
 					Chinese_name += line[i];
 				}

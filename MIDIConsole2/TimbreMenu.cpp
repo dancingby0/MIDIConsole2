@@ -77,7 +77,7 @@ void TimbreMenu::showTimbre() {
 
 // ÏÔÊ¾ÒôÉ«±í
 void TimbreMenu::showPage() {
-	for (int i = TimbreMenu::page * 20; i < TimbreMenu::page * 20 + 20 and i < Midi::getInstrumentList()->size(); i++) {
+	for (int i = TimbreMenu::page * 20; i < (TimbreMenu::page+1) * 20 and i < Midi::getInstrumentList()->size(); i++) {
 		if (i == TimbreMenu::id_pointer) {
 			std::cout << "->  ";
 		}

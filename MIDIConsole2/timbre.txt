@@ -38,10 +38,10 @@
 33 Electric Bass(finger) 电贝司（指弹）
 34 Electric Bass (pick) 电贝司（拨片）
 35 Fretless Bass 无品贝司
-36 Slap Bass 1 掌击Bass 1
-37 Slap Bass 2 掌击Bass 2
-38 Synth Bass 1 电子合成Bass 1
-39 Synth Bass 2 电子合成Bass 2
+36 Slap Bass 1 掌击Bass1
+37 Slap Bass 2 掌击Bass2
+38 Synth Bass 1 电子合成Bass1
+39 Synth Bass 2 电子合成Bass2
 
 40 Violin 小提琴
 41 Viola 中提琴
