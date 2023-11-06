@@ -127,19 +127,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Midi.cpp" />
     <ClCompile Include="MidiConfig.cpp" />
     <ClCompile Include="ModeMenu.cpp" />
+    <ClCompile Include="Recording.cpp" />
     <ClCompile Include="TimbreMenu.cpp" />
     <ClCompile Include="VolumeMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="game.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Midi.h" />
     <ClInclude Include="MidiConfig.h" />
     <ClInclude Include="ModeMenu.h" />
+    <ClInclude Include="Recording.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="TimbreMenu.h" />
     <ClInclude Include="VolumeMenu.h" />
   </ItemGroup>
@@ -150,6 +155,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MIDIConsole2.exe" />
+    <None Include="text2.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MIDIConsole2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="timbre.resx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

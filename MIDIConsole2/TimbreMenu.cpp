@@ -31,7 +31,7 @@ void TimbreMenu::runTimbre() {
 		break;
 	// 向右翻页音色表
 	case VK_RIGHT:
-		if (TimbreMenu::page < 5) {
+		if (TimbreMenu::page < 6) {
 			TimbreMenu::page++;
 			TimbreMenu::id_pointer = TimbreMenu::page * 20;
 			TimbreMenu::showTimbre();
@@ -71,7 +71,7 @@ void TimbreMenu::showTimbre() {
 	system("cls");
 	std::cout << "MIDI电子琴设置:" << std::endl;
 	std::cout << "键入id以选择你的音色 键入q表退出当前界面 按←向前翻页,按→向后翻页 按↑和↓向上向下选中音色 按Enter选定音色" << std::endl;
-	std::cout << "音色表(" << TimbreMenu::page + 1 << "/6)" << std::endl;
+	std::cout << "音色表(" << TimbreMenu::page + 1 << "/7)" << std::endl;
 	TimbreMenu::showPage();
 }
 

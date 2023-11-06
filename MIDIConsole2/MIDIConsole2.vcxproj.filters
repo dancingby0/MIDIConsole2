@@ -19,6 +19,12 @@
     <Filter Include="源文件\Midi">
       <UniqueIdentifier>{4ddf6b7f-4510-4e8b-8e4c-77438bdd2615}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\game">
+      <UniqueIdentifier>{2aba7a5f-caba-4903-8456-d8679c819e94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Record">
+      <UniqueIdentifier>{7189b27e-fee9-45be-9ebe-345c4f038974}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -42,6 +48,12 @@
     <ClCompile Include="MidiConfig.cpp">
       <Filter>源文件\Midi</Filter>
     </ClCompile>
+    <ClCompile Include="Recording.cpp">
+      <Filter>源文件\Record</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>源文件\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Midi.h">
@@ -62,6 +74,15 @@
     <ClInclude Include="MidiConfig.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Recording.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="timbre.txt">
@@ -78,5 +99,23 @@
     <None Include="MIDIConsole2.exe">
       <Filter>源文件</Filter>
     </None>
+    <None Include="text2.bin">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MIDIConsole2.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="timbre.resx">
+      <Filter>资源文件</Filter>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

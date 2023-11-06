@@ -35,23 +35,38 @@ void MidiConfig::setMode(int mode) {
 	MidiConfig::mode = mode;
 }
 
+
 // 读取配置文件
 void MidiConfig::readConfigFile() {
-	std::ifstream inputFile("config.txt");
+	std::string file_name = "config.txt";
+	
+	std::ifstream inputFile(file_name);
 
-	// 定义正则表达式模式
-	std::regex pattern("timbre:(\\d+)\\nvolume:(\\d+)\\nmode:(\\d+)");
+	if (not inputFile) {
+		inputFile.close();
+		// 打开文件，如果文件不存在则创建。
+		std::ofstream outputFile(file_name, std::ios::out | std::ios::trunc);
+		outputFile << "timbre:0\nvolume:100\nmode:0\n";
+		MidiConfig::timbre = 0;
+		MidiConfig::volume = 100;
+		MidiConfig::mode = 0;
+		outputFile.close();
+	}
+	else {
+		// 定义正则表达式模式
+		std::regex pattern("timbre:(\\d+)\\nvolume:(\\d+)\\nmode:(\\d+)");
 
-	std::string fileContents((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
+		std::string fileContents((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
 
-	std::smatch match;
+		std::smatch match;
 
-	if (std::regex_search(fileContents, match, pattern) and match.size() == 4) {
+		if (std::regex_search(fileContents, match, pattern) and match.size() == 4) {
 
-		MidiConfig::timbre = std::stoi(match[1]);
-		MidiConfig::volume = std::stoi(match[2]);
-		MidiConfig::mode = std::stoi(match[3]);
+			MidiConfig::timbre = std::stoi(match[1]);
+			MidiConfig::volume = std::stoi(match[2]);
+			MidiConfig::mode = std::stoi(match[3]);
 
+		}
 	}
 }
 

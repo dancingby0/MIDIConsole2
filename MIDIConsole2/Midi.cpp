@@ -1,5 +1,7 @@
 #include "Midi.h"
 
+const double Midi::TICK = 31.25;
+
 const int Midi::MAJOR[7] = { 2,2,1,2,2,2,1 };
 const int Midi::MINOR[7] = { 2,1,2,2,1,2,2 };
 
@@ -75,6 +77,16 @@ std::vector<InstrumentData>* Midi::getInstrumentList() {
 	return &Midi::InstrumentList;
 }
 
+// 获取正在按下的键
+std::vector<int>* Midi::getKeyList() {
+	return &Midi::KeyList;
+}
+
+// 获取正在播放的声音
+std::vector<int>* Midi::getSoundList() {
+	return &Midi::SoundList;
+}
+
 // 获取MIDI电子琴当前的音色
 int Midi::getTimbre() {
 	return MidiConfig::getTimbre();
@@ -121,6 +133,8 @@ void Midi::summonKeyMap() {
 // 从timbre.txt载入音色
 void Midi::initialTimbre() {
 
+
+
 	std::ifstream inputFile("timbre.txt");
 	// 开启文件
 	if (!inputFile.is_open()) {
@@ -149,7 +163,7 @@ void Midi::initialTimbre() {
 				// 若状态为name,且为 字母 或 空格 或 大括号 或 小括号 或 数字 时读为name
 				if (state == 1 // 状态1
 					and ('A' <= line[i] and 'Z' >= line[i] or 'a' <= line[i] and 'z' >= line[i]  // 字母
-						or line[i] == ' ' or line[i] == '(' or line[i] == ')'  // 其他符号
+						or line[i] == ' ' or line[i] == '(' or line[i] == ')' or line[i] == '+' or line[i] == '-'  // 其他符号
 						or line[i] <= '9' and '0' <= line[i])) {
 					name += line[i];
 				}
@@ -182,13 +196,14 @@ void Midi::initialMidi() {
 // 运行电子琴
 void Midi::runMIDI() {
 	Midi::flag = true;
-	Midi::showCliPrompts(); // 显示提示语
-	midiOutShortMsg(Midi::handle, MidiConfig::getTimbre() << 8 | 0xC0);// 设定音色
+	Midi::showCliPrompts();  // 显示提示语
+	midiOutShortMsg(Midi::handle, MidiConfig::getTimbre() << 8 | 0xC0);  // 设定音色
 	Midi::summonKeyMap();// 生成键与音符对应表
 	while (Midi::flag) {
-		Midi::detectKeyboardInput(); // 检测键的输入
-		Midi::operateKey(); // 对键操作
-		Sleep(10);
+		Midi::detectKeyboardInput();  // 检测键的输入
+		Midi::operateKey();  // 对键操作
+		Recording::runRecording();  // 运行录制系统
+		Sleep(Midi::TICK);
 	}
 }
 
@@ -209,7 +224,7 @@ void Midi::operateKey() {
 
 	for (int i : Midi::KeyList) {
 		// 当键表里的键不在Sound里,说明第一次按下,发声
-		if (not findVectorKey(SoundList, i) and Midi::KeyMap.count(i) > 0) {
+		if (not findVectorKey(Midi::SoundList, i) and Midi::KeyMap.count(i) > 0) {
 			Midi::playSound(Midi::handle, Midi::KeyMap[i], MidiConfig::getVolume());
 			SoundList.push_back(i);
 		}
@@ -228,17 +243,16 @@ void Midi::operateKey() {
 			Midi::quit();
 			break;
 		}
-	}
-	// 当Sound表里的音调不在键表里,说明松开了,停声
-	for (int i : Midi::SoundList) {
-		if (not findVectorKey(KeyList, i)) {
-			Midi::playSound(Midi::handle, Midi::KeyMap[i], 0);
-			[](std::vector<int>& List, int key) {List.erase(std::remove(List.begin(), List.end(), key), List.end()); }(SoundList, i);
+		// 当Sound表里的音调不在键表里,说明松开了,停声
+		for (int i : Midi::SoundList) {
+			if (not findVectorKey(Midi::KeyList, i)) {
+				Midi::playSound(Midi::handle, Midi::KeyMap[i], 0);
+				[](std::vector<int>& List, int key) {List.erase(std::remove(List.begin(), List.end(), key), List.end()); }(Midi::SoundList, i);
+			}
 		}
 	}
 }
-
-// 显示提示语
+// 显示提示语(CLI)
 void Midi::showCliPrompts() {
 	// 判定是否在命令行界面下
 	if (_isatty(_fileno(stdout))) {
@@ -256,7 +270,23 @@ void Midi::showCliPrompts() {
 		std::cout << "你目前的调式为: " << tmp << "   音色为:" << Midi::InstrumentList[MidiConfig::getTimbre()].Chinese_name << "  响度为 : " << MidiConfig::getVolume() << std::endl;
 		std::cout << "输入数字9退出" << std::endl;
 		std::cout << "A ~ K 分别对应 do3 ~ do4" << std::endl;
+		// 启动了录制
+		if (Recording::getState()) {
+			std::cout << "按下O暂停录制,按下P暂停录制" << std::endl;
+		}
+		else {
+			std::cout << "按下P进行录制弹奏的乐曲" << std::endl;
+		}
 		std::cout << "请输入你的按键:" << std::endl;
+		// 正在录制时
+		switch (Recording::getState()) {
+		case Recording::STATE::PAUSE:
+			std::cout << "暂停录制" << std::endl;
+			break;
+		case Recording::STATE::RECORDING:
+			std::cout << "正在录制中" << std::endl;
+			break;
+		}
 	}
 }
 

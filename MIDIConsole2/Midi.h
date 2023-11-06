@@ -17,6 +17,7 @@
 
 #include"MidiConfig.h"
 #include "Menu.h"
+#include "Recording.h"
 
 struct InstrumentData {
 	int id;
@@ -26,18 +27,26 @@ struct InstrumentData {
 
 class Midi{
 public:
+	static const double TICK;
+
 	static void initialMidi();
 	static void runMIDI();
 	static int getTimbre();
 	static int getVolume();
-	static void setTimbre(int id);
-	static void setVolume(int voice);
+	static std::vector<int>* getKeyList();
+	static std::vector<int>* getSoundList();
 	static std::vector<InstrumentData>* getInstrumentList();
 	static const std::array<int, 14>* getModeList();
+	static void setTimbre(int id);
+	static void setVolume(int voice);
+	
+	
 	static int getMode();
 	static void setMode(int mode);
 	// 保存配置信息
 	static void writeConfigFile();
+	// 显示提示信息
+	static void showCliPrompts();
 private:
 	// 常量
 	static const int MAJOR[7];
@@ -61,9 +70,6 @@ private:
 
 	// 初始化音色
 	static void initialTimbre();
-
-	// 显示提示信息
-	static void showCliPrompts();
 
 	// 播放声音
 	static void playSound(HMIDIOUT handle, int frequency, int volume);

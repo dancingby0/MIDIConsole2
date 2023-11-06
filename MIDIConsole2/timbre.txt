@@ -95,7 +95,7 @@
 84 Lead 5 (charang) 合成主音5
 85 Lead 6 (voice) 合成主音6（人声）
 86 Lead 7 (fifths) 合成主音7（平行五度）
-87 Lead 8 (bass+lead)合成主音8（贝司加主音）
+87 Lead 8 (bass+lead) 合成主音8（贝司加主音）
 
 88 Pad 1 (new age) 合成音色1（新世纪）
 89 Pad 2 (warm) 合成音色2 （温暖）
