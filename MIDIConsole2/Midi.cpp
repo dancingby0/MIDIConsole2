@@ -1,6 +1,6 @@
 #include "Midi.h"
 
-const double Midi::TICK = 31.25;
+const double Midi::TICK = 10;
 
 const int Midi::MAJOR[7] = { 2,2,1,2,2,2,1 };
 const int Midi::MINOR[7] = { 2,1,2,2,1,2,2 };
@@ -9,11 +9,19 @@ const std::array<int, 14> Midi::MODE = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13 };
 
 bool Midi::flag;
 
+bool Midi::hear_beat;
+
 // 键表
 std::map<int, int> Midi::KeyMap;
 
 // MIDI句柄
 HMIDIOUT Midi::handle;
+
+// 刚发声的音符表
+std::vector<int> Midi::RunSoundList;
+
+// 刚停声的音符表
+std::vector<int> Midi::StopSoundList;
 
 // 音色表
 std::vector<InstrumentData> Midi::InstrumentList;
@@ -87,6 +95,21 @@ std::vector<int>* Midi::getSoundList() {
 	return &Midi::SoundList;
 }
 
+// 获取刚发声时的音符
+std::vector<int>* Midi::getRunSoundList() {
+	return &Midi::RunSoundList;
+}
+
+// 获取刚停声的音符
+std::vector<int>* Midi::getStopSoundList() {
+	return &Midi::StopSoundList;
+}
+
+//获取MIDI电子琴的心跳
+bool Midi::getHeartBeat() {
+	return Midi::hear_beat;
+}
+
 // 获取MIDI电子琴当前的音色
 int Midi::getTimbre() {
 	return MidiConfig::getTimbre();
@@ -151,13 +174,13 @@ void Midi::initialTimbre() {
 			int state = 0;// 读取一行时初始状态(读取id)
 
 			for (int i = 0; i < line.size(); i++) {
-				
+
 				// 若id在数字范围内并且时状态0时,读取
 				if ('0' <= line[i] and line[i] <= '9' and state == 0) {
 					id = id * 10 + (line[i] - '0');
 				}
 				// 若不是数字(空格),且状态位于0(读取数字时),则转换为1(读取name)
-				else if(state==0){
+				else if (state == 0) {
 					state = 1;
 				}
 				// 若状态为name,且为 字母 或 空格 或 大括号 或 小括号 或 数字 时读为name
@@ -199,16 +222,21 @@ void Midi::runMIDI() {
 	Midi::showCliPrompts();  // 显示提示语
 	midiOutShortMsg(Midi::handle, MidiConfig::getTimbre() << 8 | 0xC0);  // 设定音色
 	Midi::summonKeyMap();// 生成键与音符对应表
+	Midi::hear_beat = true;
 	while (Midi::flag) {
+		Recording::runRecording();  // 运行录制系统
 		Midi::detectKeyboardInput();  // 检测键的输入
 		Midi::operateKey();  // 对键操作
-		Recording::runRecording();  // 运行录制系统
+		
 		Sleep(Midi::TICK);
+		hear_beat = !hear_beat;
 	}
 }
 
 // 检测键输入
 void Midi::detectKeyboardInput() {
+	Midi::RunSoundList.clear();
+	Midi::StopSoundList.clear();
 	Midi::KeyList.clear(); // 当读取下1tick数据时,清空玩家键表
 	for (int key = 1; key < 256; key++) {
 		// 探测键是否按下(第16位为按下的判断位)
@@ -220,15 +248,14 @@ void Midi::detectKeyboardInput() {
 
 // 对玩家输入的键进行相应操作
 void Midi::operateKey() {
-
-
 	for (int i : Midi::KeyList) {
 		// 当键表里的键不在Sound里,说明第一次按下,发声
-		if (not findVectorKey(Midi::SoundList, i) and Midi::KeyMap.count(i) > 0) {
+		if (not findVectorKey(SoundList, i) and Midi::KeyMap.count(i) > 0) {
 			Midi::playSound(Midi::handle, Midi::KeyMap[i], MidiConfig::getVolume());
-			SoundList.push_back(i);
-		}
+			Midi::RunSoundList.push_back(KeyMap[i]);  // 将发声的音调存入KeyMap中
+			Midi::SoundList.push_back(i);
 
+		}
 
 		// 根据1tick内玩家按下的键执行操作
 		switch (i) {
@@ -243,13 +270,15 @@ void Midi::operateKey() {
 			Midi::quit();
 			break;
 		}
-		// 当Sound表里的音调不在键表里,说明松开了,停声
-		for (int i : Midi::SoundList) {
-			if (not findVectorKey(Midi::KeyList, i)) {
-				Midi::playSound(Midi::handle, Midi::KeyMap[i], 0);
-				[](std::vector<int>& List, int key) {List.erase(std::remove(List.begin(), List.end(), key), List.end()); }(Midi::SoundList, i);
-			}
+	}
+	// 当Sound表里的音调不在键表里,说明松开了,停声
+	for (int i : Midi::SoundList) {
+		if (not findVectorKey(KeyList, i)) {
+			Midi::playSound(Midi::handle, Midi::KeyMap[i], 0);
+			Midi::StopSoundList.push_back(KeyMap[i]);  // 将停声的键存入KeyMap中
+			[](std::vector<int>& List, int key) {List.erase(std::remove(List.begin(), List.end(), key), List.end()); }(Midi::SoundList, i);
 		}
+
 	}
 }
 // 显示提示语(CLI)

@@ -33,9 +33,12 @@ public:
 	static void runMIDI();
 	static int getTimbre();
 	static int getVolume();
+	static bool getHeartBeat();
 	static std::vector<int>* getKeyList();
 	static std::vector<int>* getSoundList();
 	static std::vector<InstrumentData>* getInstrumentList();
+	static std::vector<int>* getRunSoundList();
+	static std::vector<int>* getStopSoundList();
 	static const std::array<int, 14>* getModeList();
 	static void setTimbre(int id);
 	static void setVolume(int voice);
@@ -54,10 +57,14 @@ private:
 	static const std::array<int, 14> MODE;
 
 	// 私有属性
+
+	static std::vector<int> RunSoundList;  // 正在发声的音符表
+	static std::vector<int> StopSoundList;  // 正在停止的音符表
 	static std::vector<InstrumentData> InstrumentList;
 	static std::vector<int> KeyList;
 	static std::vector<int> SoundList;
 	static std::map<int, int>KeyMap;
+	static bool hear_beat;
 	static bool flag;
 	static HMIDIOUT handle;
 

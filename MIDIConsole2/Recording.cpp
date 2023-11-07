@@ -1,8 +1,8 @@
 #include "Recording.h"
 
-const double Recording::TICK = 0.03125;
+const double Recording::TICK = 10;
 int Recording::total_tick = 0;
-
+bool Recording::heart_beat = true;
 
 std::string Recording::file_name = "";
 
@@ -16,16 +16,21 @@ int Recording::getState() {
 
 
 
-// 运行录制系统
+// 运行录制系统,每10ms run一次
 void Recording::runRecording() {
+	// 同步心跳
+	Recording::heart_beat = Midi::getHeartBeat();
 	for (int i : *Midi::getKeyList()) {
 
+		// 按下录制键时
 		if (i == 'P') {
+			Sleep(200);  // 暂停200ms,以防止误触
 			// 当正在录制时
 			switch (Recording::getState()) {
 				// 启动录制
 			case Recording::STATE::DONE:
 				Recording::startRecording();
+
 				break;
 
 				// 停止录制
@@ -41,32 +46,71 @@ void Recording::runRecording() {
 			// 更新面板
 			Midi::showCliPrompts();
 		}
-		else if (i == 'O' and Recording::state == RECORDING) {
-			// 切换暂停状态
+
+		// 按下切换暂停键时
+		else if (i == 'O' and not(Recording::getState() == Recording::STATE::DONE)) {
 			Recording::switchPause();
+			Sleep(200);
 		}
 
+		// 正在录制的状态且心跳相同时
+		if (Recording::getState() == Recording::STATE::RECORDING and Recording::heart_beat == Midi::getHeartBeat()) {
+			total_tick++;
+			Recording::writeFile();
+		}
 	}
-
-
+	
 }
+
+
 // 开始录制
 void Recording::startRecording() {
-	std::string input;
-	system("cls");
-	Sleep(200);  // 暂停200ms,以防止误触
-	std::string folder = "./scores/";
 
-	
-	// 若文件夹不存在,创建
-	if (_access(folder.c_str(), 0))
-	{
-		//system("mkdir head");
-		int success = _mkdir(folder.c_str());
+	system("cls");
+	Recording::newFile();
+
+}
+
+
+void Recording::switchPause() {
+
+	if (Recording::state == STATE::RECORDING) {
+		Recording::state = STATE::PAUSE;
+
+
+	}
+	else {
+		Recording::state = STATE::RECORDING;
+
+	}
+	Midi::showCliPrompts();
+
+}
+
+
+void Recording::stopRecording() {
+	Recording::total_tick = 0;
+	Recording::file_name = "";
+	Recording::state = STATE::DONE;
+}
+
+
+
+// 创建新的录制文件
+void Recording::newFile() {
+
+	std::string folder = "scores";
+
+	// 检查文件夹是否存在，如果不存在则创建它
+	if (not std::filesystem::is_directory(folder)) {
+		std::filesystem::create_directory(folder);
 	}
 
 	bool flag_input = true;
 	while (flag_input) {
+		std::string input;
+		// 这里需要清空输入流
+		system("cls");
 		std::cout << "请输入保存的录制音频文件名(输入\":wq\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
 		std::cin >> input;
 		bool flag = true;
@@ -76,36 +120,86 @@ void Recording::startRecording() {
 			}
 		}
 		if (input == ":wq") {
+
 			return;  // 退出录制
 		}
+
 		// 文件命名规范
 		else if (flag) {
-			flag_input = false;
-			Recording::file_name = input;
+			Recording::file_name = input + ".scores";
 
+			// 检查文件是否存在
+			if (std::filesystem::exists(folder + "/" + Recording::file_name)) {
+				system("cls");
+				std::cout << "文件 " << Recording::file_name << " 已存在!" << std::endl;
+				Recording::file_name = "";
+				Sleep(1000);
+			}
+			else {
+				// 打开文件，如果文件不存在则创建它,有则清空
+				std::ofstream outputFile("scores/" + Recording::file_name, std::ios::ate);
+
+				if (outputFile.is_open()) {
+					// 向文件中写入初始内容
+					outputFile << "timbre:" << Midi::getTimbre() << std::endl;
+					outputFile << "volume:" << Midi::getVolume() << std::endl;
+					outputFile << "mode:" << Midi::getMode() << std::endl;
+					outputFile.close();
+				}
+				else {
+					std::cerr << "无法打开文件 " << Recording::file_name << "。" << std::endl;
+					Sleep(1000);
+				}
+				flag_input = false;
+				Recording::state = Recording::STATE::RECORDING;
+				Sleep(100);
+			}
 		}
 		// 文件命名不规范
 		else {
+			system("cls");
 			std::cout << "你输入了非法字符!请重新输入!" << std::endl;
 			Sleep(1000);
-			system("cls");
+
 		}
 	}
-	Recording::state = 1;
 }
 
+void Recording::writeFile() {
 
-void Recording::switchPause() {
-	if (Recording::state == STATE::RECORDING) {
-		Recording::state = STATE::PAUSE;
+
+	// 读取发声的列表
+	for (int i : *Midi::getRunSoundList()) {
+		// 打开录制文件
+		std::ofstream outputFile("scores/" + Recording::file_name, std::ios::app);
+
+		if (outputFile.is_open()) {
+			// 向文件中写入要发声的键
+			outputFile << "1 " << total_tick << " " << i << std::endl;
+
+			outputFile.close();
+		}
+		else {
+			std::cerr << "无法打开文件 " << Recording::file_name << "。" << std::endl;
+			Sleep(1000);
+		}
 	}
-	else {
-		Recording::state = STATE::RECORDING;
+
+	// 读取停声的列表
+	for (int i : *Midi::getStopSoundList()) {
+		// 打开录制文件
+		std::ofstream outputFile("scores/" + Recording::file_name, std::ios::app);
+
+		if (outputFile.is_open()) {
+			// 向文件中写入要停止的键
+			outputFile << "0 " << total_tick << " " << i << std::endl;
+
+			outputFile.close();
+		}
+		else {
+			std::cerr << "无法打开文件 " << Recording::file_name << "。" << std::endl;
+			Sleep(1000);
+		}
 	}
-	
-}
 
-
-void Recording::stopRecording() {
-	Recording::state = STATE::DONE;
 }
