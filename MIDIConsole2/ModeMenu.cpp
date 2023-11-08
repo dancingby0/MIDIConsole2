@@ -11,13 +11,13 @@ void ModeMenu::setMode(int mode) {
 // 根据玩家输入更改调式
 void ModeMenu::runModeMenu() {
 	switch (Menu::getKey()) {
-	// 退出
+		// 退出
 	case 'Q':
 		Menu::setState(SETTING);
 		Menu::showSetting();
 		break;
 
-	// 调式菜单向上选择
+		// 调式菜单向上选择
 	case VK_UP:
 		if (ModeMenu::mode_pointer >= 1) {
 			ModeMenu::mode_pointer--;
@@ -26,7 +26,7 @@ void ModeMenu::runModeMenu() {
 		}
 		break;
 
-	// 调式菜单向下选择
+		// 调式菜单向下选择
 	case VK_DOWN:
 		if (ModeMenu::mode_pointer <= 12) {
 			ModeMenu::mode_pointer++;
@@ -35,7 +35,7 @@ void ModeMenu::runModeMenu() {
 		}
 		break;
 
-	// 保存设置
+		// 保存设置
 	case VK_RETURN:
 		Midi::setMode(mode_pointer);
 		Menu::setState(SETTING);

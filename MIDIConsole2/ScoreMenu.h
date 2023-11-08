@@ -33,7 +33,7 @@ public:
 
 
 private:
-	
+
 
 	static std::vector<ScoreMenuSound> SoundList;  // 发声表
 	static int timbre;  // 音调
@@ -44,7 +44,7 @@ private:
 	static std::vector<std::string> ScoreList;
 	static int page;
 	static int id_pointer;
-	
+
 
 	// 对当前选中的文件发声
 	static void disposeLine(std::string line);

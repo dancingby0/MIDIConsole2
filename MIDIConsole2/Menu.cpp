@@ -85,7 +85,6 @@ void Menu::detectKeyboardInput() {
 // 通过input操作主菜单
 void Menu::runMenu() {
 
-
 	switch (Menu::input) {
 
 	case VK_RETURN: // Enter键 进入电子琴
@@ -107,7 +106,7 @@ void Menu::runMenu() {
 	case 'F': // F键 音频文件处理
 		Menu::state = SCOREMENU;
 		ScoreMenu::ReadScoreFile();
-		
+
 		break;
 	}
 }
@@ -131,7 +130,7 @@ void Menu::showSetting() {
 
 void Menu::runSAVE() {
 	Midi::writeConfigFile();
-	
+
 	// 对调式进行文本推理
 	std::string tmp;
 	if (MidiConfig::getMode() < 7) {
@@ -142,7 +141,7 @@ void Menu::runSAVE() {
 		tmp = MidiConfig::getMode() - 7 + 'A';
 		tmp += "小调式";
 	}
-	
+
 	system("cls");
 	std::cout << "成功保存当前设置为:" << std::endl;
 	std::cout << "音色 : " << Midi::getInstrumentList()->at(Midi::getTimbre()).Chinese_name << std::endl;

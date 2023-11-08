@@ -30,7 +30,7 @@ void ScoreMenu::ReadScoreFile() {
 
 	if (std::filesystem::is_directory(folderPath)) {
 		for (const auto& entry : std::filesystem::directory_iterator(folderPath)) {
-			if (std::filesystem::is_regular_file(entry) and entry.path().extension() == ".scores" 
+			if (std::filesystem::is_regular_file(entry) and entry.path().extension() == ".scores"
 				and not ScoreMenu::findVectorKey(ScoreMenu::ScoreList, entry.path().filename().string())) {
 				ScoreMenu::ScoreList.push_back(entry.path().filename().string());  // 塞进文件名
 				file_count++;
@@ -58,7 +58,7 @@ void ScoreMenu::ReadScoreFile() {
 // 音色菜单主程式
 void ScoreMenu::runScore() {
 
-	
+
 
 	switch (Menu::getKey()) {
 		// 退出
@@ -76,7 +76,7 @@ void ScoreMenu::runScore() {
 		break;
 		// 向右翻页音色表
 	case VK_RIGHT:
-		if (ScoreMenu::page < (ScoreMenu::file_count-1)/10) {
+		if (ScoreMenu::page < (ScoreMenu::file_count - 1) / 10) {
 			ScoreMenu::page++;
 			ScoreMenu::id_pointer = ScoreMenu::page * 10;
 			ScoreMenu::showScore();
@@ -114,7 +114,7 @@ void ScoreMenu::showScore() {
 	system("cls");
 	std::cout << "文件列表:" << std::endl;
 	std::cout << "键入id以选择你的文件 键入q表退出当前界面 按←向前翻页,按→向后翻页 按↑和↓向上向下 按Enter播放音频文件" << std::endl;
-	std::cout << "文件表(" << ScoreMenu::page + 1 << "/" << (ScoreMenu::file_count-1)/10 + 1<<")" << std::endl;
+	std::cout << "文件表(" << ScoreMenu::page + 1 << "/" << (ScoreMenu::file_count - 1) / 10 + 1 << ")" << std::endl;
 	ScoreMenu::showPage();
 }
 
@@ -124,7 +124,7 @@ void ScoreMenu::showPage() {
 		if (i == ScoreMenu::id_pointer) {
 			std::cout << "->  ";
 		}
-		std::cout << ScoreMenu::ScoreList.at(i)<< std::endl;
+		std::cout << ScoreMenu::ScoreList.at(i) << std::endl;
 	}
 }
 
@@ -150,7 +150,7 @@ void ScoreMenu::playScore() {
 		while (std::getline(inputFile, line)) {
 			// 在这里处理每一行的内容
 			disposeLine(line);
-			
+
 		}
 
 		// 关闭文件
@@ -159,7 +159,7 @@ void ScoreMenu::playScore() {
 	else {
 		std::cerr << "无法打开文件: " << file_name << std::endl;
 		ScoreMenu::quitScoreMenu();
-		return ;
+		return;
 	}
 
 	bool flag = true;
@@ -174,7 +174,7 @@ void ScoreMenu::playScore() {
 					}(ScoreMenu::SoundList, i);
 			}
 			else if (i.time <= ScoreMenu::time and i.type == 1) {
-				Midi::playSound(Midi::getHandle(), i.frequency,i.volume);
+				Midi::playSound(Midi::getHandle(), i.frequency, i.volume);
 				[](std::vector<ScoreMenuSound>& List, ScoreMenuSound key) {
 					List.erase(std::remove(List.begin(), List.end(), key), List.end());
 					}(ScoreMenu::SoundList, i);
@@ -203,16 +203,16 @@ void ScoreMenu::disposeLine(std::string line) {
 	// 若无法分割,则为发声键
 	else {
 		int state = 0;
-		std::string num[] = { "" ,"","",""};
-		for (char i = 0; i < line.size(); i++){
+		std::string num[] = { "" ,"","","" };
+		for (char i = 0; i < line.size(); i++) {
 			if (line[i] <= '9' and line[i] >= '0') {
 				num[state] += line[i];
 			}
 			//如果是空格
-			else if(line[i]==' ') {
+			else if (line[i] == ' ') {
 				state += 1;
 			}
 		}
-		ScoreMenu::SoundList.push_back(ScoreMenuSound{ std::stoi(num[0]),std::stoi(num[1]),std::stoi(num[2]) ,std::stoi(num[3])});
+		ScoreMenu::SoundList.push_back(ScoreMenuSound{ std::stoi(num[0]),std::stoi(num[1]),std::stoi(num[2]) ,std::stoi(num[3]) });
 	}
 }

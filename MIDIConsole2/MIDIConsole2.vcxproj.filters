@@ -48,14 +48,14 @@
     <ClCompile Include="Recording.cpp">
       <Filter>源文件\Record</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="TickMenu.cpp">
       <Filter>源文件\Menu</Filter>
     </ClCompile>
     <ClCompile Include="ScoreMenu.cpp">
       <Filter>源文件\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="StartAnimation.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,13 +83,13 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="TickMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ScoreMenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StartAnimation.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -101,6 +101,9 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="config.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="Animation.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

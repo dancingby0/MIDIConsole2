@@ -128,7 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Midi.cpp" />
@@ -136,12 +135,12 @@
     <ClCompile Include="ModeMenu.cpp" />
     <ClCompile Include="Recording.cpp" />
     <ClCompile Include="ScoreMenu.cpp" />
+    <ClCompile Include="StartAnimation.cpp" />
     <ClCompile Include="TickMenu.cpp" />
     <ClCompile Include="TimbreMenu.cpp" />
     <ClCompile Include="VolumeMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Logger.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Midi.h" />
     <ClInclude Include="MidiConfig.h" />
@@ -149,11 +148,13 @@
     <ClInclude Include="Recording.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScoreMenu.h" />
+    <ClInclude Include="StartAnimation.h" />
     <ClInclude Include="TickMenu.h" />
     <ClInclude Include="TimbreMenu.h" />
     <ClInclude Include="VolumeMenu.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Animation.txt" />
     <Text Include="config.txt" />
     <Text Include="timbre.txt" />
     <Text Include="音色频率对应表.txt" />
