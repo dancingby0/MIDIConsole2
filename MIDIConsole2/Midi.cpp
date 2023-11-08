@@ -36,7 +36,8 @@ std::vector<int> Midi::KeyList;
 std::vector<int> Midi::RealTimeKeyList;
 
 // 判定vector中是否存在一个值
-bool inline findVectorKey(std::vector<int>List, int value) {
+
+bool Midi::findVectorKey(std::vector<int>List, int value) {
 	bool flag = false;
 	for (auto i = List.begin(); i < List.end(); i++) {
 		if (*i == value) flag = true;
@@ -90,7 +91,7 @@ std::vector<InstrumentData>* Midi::getInstrumentList() {
 
 // 获取正在按下的键
 std::vector<int>* Midi::getKeyList() {
-	return &Midi::KeyList;
+	return &Midi::RealTimeKeyList;
 }
 
 // 获取正在播放的声音
@@ -285,7 +286,7 @@ void Midi::disposeRest() {
 		
 
 		// 这里插入1tick时要进行的其他功能(获取发声表和停声表)
-		//Recording::runRecording();
+		Recording::runRecordingTick();
 
 		Midi::heart_beat = 0;  // 开始新的一次心跳
 		Midi::KeyList.clear(); // 当读取下1tick数据时,清空玩家键表

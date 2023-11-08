@@ -9,17 +9,25 @@ std::string Recording::file_name = "";
 int Recording::state = DONE;
 
 
+
 // 获取录制状态
 int Recording::getState() {
 	return Recording::state;
 }
 
+// 运行录制系统.每tick运行一次
+void Recording::runRecordingTick() {
 
-
-// 运行录制系统,每10ms run一次
+	// 正在录制的状态且心跳相同时
+	if (Recording::getState() == Recording::STATE::RECORDING) {
+		total_time += Midi::getTick();  // 增加总时长(此处单位为ms)
+		Recording::writeFile();
+	}
+}
+// 运行录制系统,每1ms运行一次
 void Recording::runRecording() {
-	// 同步心跳
-	Recording::heart_beat = Midi::getHeartBeat();
+
+
 	for (int i : *Midi::getKeyList()) {
 
 		// 按下录制键时
@@ -52,14 +60,7 @@ void Recording::runRecording() {
 			Recording::switchPause();
 			Sleep(200);
 		}
-
-		// 正在录制的状态且心跳相同时
-		if (Recording::getState() == Recording::STATE::RECORDING and Recording::heart_beat == Midi::getHeartBeat()) {
-			total_time+=Midi::getTick();  // 增加总时长(此处单位为ms)
-			Recording::writeFile();
-		}
 	}
-	
 }
 
 
@@ -89,6 +90,20 @@ void Recording::switchPause() {
 
 
 void Recording::stopRecording() {
+	// 打开录制文件
+	std::ofstream outputFile("scores/" + Recording::file_name, std::ios::app);
+
+	if (outputFile.is_open()) {
+		// 向文件中写入要停止的键
+		outputFile << "total_time: " << total_time << std::endl;
+
+		outputFile.close();
+	}
+	else {
+		std::cerr << "无法打开文件 " << Recording::file_name << "。" << std::endl;
+		Sleep(1000);
+	}
+
 	Recording::total_time = 0;
 	Recording::file_name = "";
 	Recording::state = STATE::DONE;
@@ -112,16 +127,16 @@ void Recording::newFile() {
 		
 		
 		system("cls");
-		std::cout << "请输入保存的录制音频文件名(输入\":wq\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
+		std::cout << "请输入保存的录制音频文件名(输入\"QUIT\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
 		bool flag_input_0 = true;
 		while (flag_input_0) {
 			
 			for (char key = 1; key < 256; key++) {
 				// 探测键是否被按下
-				if (GetKeyState(key) & 0x8000 and (key <= 'z' and key >= 'a' or key <= 'Z' and key >= 'A' or key <= '9' and key >= '0' or key == ':')) {
+				if (GetKeyState(key) & 0x8000 and (key <= 'z' and key >= 'a' or key <= 'Z' and key >= 'A' or key <= '9' and key >= '0')) {
 					std::cout << key;
 					input += key;
-					Sleep(100);
+					Sleep(200);
 				}
 				if (GetKeyState(key) & 0x8000 and key == VK_RETURN) {
 					flag_input_0 = false;
@@ -132,7 +147,7 @@ void Recording::newFile() {
 					std::cout << "请输入保存的录制音频文件名(输入\":wq\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
 					input.pop_back();
 					std::cout << input;
-					Sleep(100);
+					Sleep(200);
 				}
 				
 			}
@@ -143,7 +158,7 @@ void Recording::newFile() {
 				flag = false;
 			}
 		}
-		if (input == ":wq") {
+		if (input == "QUIT") {
 
 			return;  // 退出录制
 		}
@@ -189,11 +204,18 @@ void Recording::newFile() {
 	}
 }
 
+
+
 void Recording::writeFile() {
 
+	
 
 	// 读取发声的列表
 	for (int i : *Midi::getRunSoundList()) {
+		// 若Run和Stop表中都存在同一个键,则不存储
+		if (Midi::findVectorKey(*Midi::getStopSoundList(), i)) {
+			continue;
+		}
 		// 打开录制文件
 		std::ofstream outputFile("scores/" + Recording::file_name, std::ios::app);
 
@@ -211,6 +233,9 @@ void Recording::writeFile() {
 
 	// 读取停声的列表
 	for (int i : *Midi::getStopSoundList()) {
+		if (Midi::findVectorKey(*Midi::getRunSoundList(), i)) {
+			continue;
+		}
 		// 打开录制文件
 		std::ofstream outputFile("scores/" + Recording::file_name, std::ios::app);
 

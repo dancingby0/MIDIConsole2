@@ -14,6 +14,8 @@ class Recording
 public:
 	const enum STATE { DONE, RECORDING, PAUSE };
 
+	// 运行录制系统,每tick运行一次
+	static void runRecordingTick();
 	// 运行录制系统
 	static void runRecording();
 	

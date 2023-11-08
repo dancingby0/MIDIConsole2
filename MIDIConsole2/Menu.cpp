@@ -61,6 +61,8 @@ void Menu::changeMenu() {
 		TickMenu::runTickMenu();
 		break;
 
+	case SCOREMENU:
+		ScoreMenu::runScore();
 	}
 }
 
@@ -101,6 +103,12 @@ void Menu::runMenu() {
 		Menu::state = SETTING;
 		Menu::showSetting();
 		break;
+
+	case 'F': // F键 音频文件处理
+		Menu::state = SCOREMENU;
+		ScoreMenu::ReadScoreFile();
+		
+		break;
 	}
 }
 
@@ -108,7 +116,7 @@ void Menu::runMenu() {
 void Menu::showMenu() {
 	system("cls");
 	std::cout << "MIDI电子琴菜单:" << std::endl;
-	std::cout << "按下Enter键进入电子琴弹奏,S:设置,0:退出" << std::endl;
+	std::cout << "按下Enter键进入电子琴弹奏,S:设置,0:退出,F:音频文件播放" << std::endl;
 	std::cout << "请按下你的按键:";
 }
 

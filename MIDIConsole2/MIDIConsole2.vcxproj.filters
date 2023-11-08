@@ -19,9 +19,6 @@
     <Filter Include="源文件\Midi">
       <UniqueIdentifier>{4ddf6b7f-4510-4e8b-8e4c-77438bdd2615}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\game">
-      <UniqueIdentifier>{2aba7a5f-caba-4903-8456-d8679c819e94}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Record">
       <UniqueIdentifier>{7189b27e-fee9-45be-9ebe-345c4f038974}</UniqueIdentifier>
     </Filter>
@@ -51,17 +48,14 @@
     <ClCompile Include="Recording.cpp">
       <Filter>源文件\Record</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>源文件\game</Filter>
-    </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TickMenu.cpp">
       <Filter>源文件\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="AnalogKeyInput.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ScoreMenu.cpp">
+      <Filter>源文件\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,16 +83,13 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TickMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="AnalogKeyInput.h">
+    <ClInclude Include="ScoreMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

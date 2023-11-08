@@ -27,8 +27,8 @@ struct InstrumentData {
 
 class Midi{
 public:
-	
 
+	static bool findVectorKey(std::vector<int>List, int value);
 	static void initialMidi();
 	static void runMIDI();
 	static int getTimbre();

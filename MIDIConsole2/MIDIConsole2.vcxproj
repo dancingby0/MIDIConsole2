@@ -128,8 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AnalogKeyInput.cpp" />
-    <ClCompile Include="game.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -137,13 +135,12 @@
     <ClCompile Include="MidiConfig.cpp" />
     <ClCompile Include="ModeMenu.cpp" />
     <ClCompile Include="Recording.cpp" />
+    <ClCompile Include="ScoreMenu.cpp" />
     <ClCompile Include="TickMenu.cpp" />
     <ClCompile Include="TimbreMenu.cpp" />
     <ClCompile Include="VolumeMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AnalogKeyInput.h" />
-    <ClInclude Include="game.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Midi.h" />
@@ -151,6 +148,7 @@
     <ClInclude Include="ModeMenu.h" />
     <ClInclude Include="Recording.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ScoreMenu.h" />
     <ClInclude Include="TickMenu.h" />
     <ClInclude Include="TimbreMenu.h" />
     <ClInclude Include="VolumeMenu.h" />
