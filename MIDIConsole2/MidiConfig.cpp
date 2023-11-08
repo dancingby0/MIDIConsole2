@@ -4,6 +4,7 @@
 int MidiConfig::timbre;
 int MidiConfig::volume;
 int MidiConfig::mode;
+int MidiConfig::tick;
 
 // 提供音色
 int MidiConfig::getTimbre() {
@@ -35,6 +36,16 @@ void MidiConfig::setMode(int mode) {
 	MidiConfig::mode = mode;
 }
 
+// 获取时间刻
+int MidiConfig::getTick() {
+	return MidiConfig::tick;
+}
+
+// 设置时间刻
+void MidiConfig::setTick(int tick) {
+	MidiConfig::tick = tick;
+}
+
 
 // 读取配置文件
 void MidiConfig::readConfigFile() {
@@ -46,26 +57,27 @@ void MidiConfig::readConfigFile() {
 		inputFile.close();
 		// 打开文件，如果文件不存在则创建。
 		std::ofstream outputFile(file_name, std::ios::out | std::ios::trunc);
-		outputFile << "timbre:0\nvolume:100\nmode:0\n";
+		outputFile << "timbre:0\nvolume:100\nmode:0\ntick:10\n";
 		MidiConfig::timbre = 0;
 		MidiConfig::volume = 100;
 		MidiConfig::mode = 0;
+		MidiConfig::tick = 10;
 		outputFile.close();
 	}
 	else {
 		// 定义正则表达式模式
-		std::regex pattern("timbre:(\\d+)\\nvolume:(\\d+)\\nmode:(\\d+)");
+		std::regex pattern("timbre:(\\d+)\\nvolume:(\\d+)\\nmode:(\\d+)\\ntick:(\\d+)");
 
 		std::string fileContents((std::istreambuf_iterator<char>(inputFile)), std::istreambuf_iterator<char>());
 
 		std::smatch match;
 
-		if (std::regex_search(fileContents, match, pattern) and match.size() == 4) {
+		if (std::regex_search(fileContents, match, pattern) and match.size() == 5) {
 
 			MidiConfig::timbre = std::stoi(match[1]);
 			MidiConfig::volume = std::stoi(match[2]);
 			MidiConfig::mode = std::stoi(match[3]);
-
+			MidiConfig::tick = std::stoi(match[4]);
 		}
 	}
 }
@@ -79,4 +91,7 @@ void MidiConfig::writeConfigFile() {
 	outputFile << "timbre:" << MidiConfig::timbre << "\n";
 	outputFile << "volume:" << MidiConfig::volume << "\n";
 	outputFile << "mode:" << MidiConfig::mode << "\n";
+	outputFile << "tick:" << MidiConfig::tick << "\n";
+
+	outputFile.close();
 }

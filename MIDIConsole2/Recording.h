@@ -12,7 +12,7 @@
 class Recording
 {
 public:
-	static const enum STATE { DONE, RECORDING, PAUSE };
+	const enum STATE { DONE, RECORDING, PAUSE };
 
 	// 运行录制系统
 	static void runRecording();
@@ -20,9 +20,8 @@ public:
 	// 获取录制状态
 	static int getState();
 private:
-	static const double TICK;
 
-	static int total_tick;
+	static int total_time;
 	static bool heart_beat;  // 录制状态的心跳,用于同MIDI电子琴同步
 	static std::vector<std::vector<int>> content;
 

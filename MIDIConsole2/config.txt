@@ -1,3 +1,4 @@
 timbre:3
-volume:111
-mode:1
+volume:109
+mode:3
+tick:200

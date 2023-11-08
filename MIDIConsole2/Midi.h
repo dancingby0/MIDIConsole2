@@ -27,7 +27,7 @@ struct InstrumentData {
 
 class Midi{
 public:
-	static const double TICK;
+	
 
 	static void initialMidi();
 	static void runMIDI();
@@ -42,6 +42,8 @@ public:
 	static const std::array<int, 14>* getModeList();
 	static void setTimbre(int id);
 	static void setVolume(int voice);
+	static void setTick(int tick);
+	static int getTick();
 	
 	
 	static int getMode();
@@ -61,19 +63,25 @@ private:
 	static std::vector<int> RunSoundList;  // 正在发声的音符表
 	static std::vector<int> StopSoundList;  // 正在停止的音符表
 	static std::vector<InstrumentData> InstrumentList;
-	static std::vector<int> KeyList;
+	static std::vector<int> KeyList;  // 1tick内玩家录入的键
+	static std::vector<int> RealTimeKeyList;  // 实时检测玩家录入的键
 	static std::vector<int> SoundList;
 	static std::map<int, int>KeyMap;
-	static bool hear_beat;
+	static int heart_beat;  // 每tick更新一次,范围为0-tick
 	static bool flag;
 	static HMIDIOUT handle;
 
+	// 对玩家的实时输入做出操作
+	static void operateRealTimeKey();
 
-	// 对玩家的输入的键作出相应操作
+	// 对玩家1tick输入的键作出相应操作
 	static void operateKey();
 
 	// 探测玩家的键输入
 	static void detectKeyboardInput();
+
+	// 探测键表
+	static void detectRealTimeKeyList();
 
 	// 初始化音色
 	static void initialTimbre();
@@ -89,6 +97,9 @@ private:
 
 	// 退出midi电子琴
 	static void quit();
+
+	// 处理杂项
+	static void disposeRest();
 };
 
 #endif // !MIDI_H

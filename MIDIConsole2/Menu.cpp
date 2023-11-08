@@ -20,6 +20,7 @@ void Menu::start() {
 	VolumeMenu::setVolume(Midi::getVolume());
 	TimbreMenu::setTimbre(Midi::getTimbre());
 	ModeMenu::setMode(Midi::getMode());
+	TickMenu::setTick(Midi::getTick());
 	Menu::showMenu();
 	while (Menu::flag) {
 		Menu::detectKeyboardInput(); // 探测键的输入
@@ -54,6 +55,10 @@ void Menu::changeMenu() {
 
 	case MIDI:
 		Midi::runMIDI();
+		break;
+
+	case TICK:
+		TickMenu::runTickMenu();
 		break;
 
 	}
@@ -112,7 +117,7 @@ void Menu::showSetting() {
 	system("cls");
 	std::cout << "MIDI电子琴设置:" << std::endl;
 	std::cout << "按下数字9退出" << std::endl;
-	std::cout << "A:音色,B:响度 C:调式 D:保存当前设置" << std::endl;
+	std::cout << "A:音色,B:响度 C:调式 D:保存当前设置 E:时间刻" << std::endl;
 	std::cout << "请按下你的按键:";
 }
 
@@ -135,6 +140,7 @@ void Menu::runSAVE() {
 	std::cout << "音色 : " << Midi::getInstrumentList()->at(Midi::getTimbre()).Chinese_name << std::endl;
 	std::cout << "响度 : " << Midi::getVolume() << std::endl;
 	std::cout << "调式 : " << tmp << std::endl;
+	std::cout << "时间刻 : " << Midi::getTick() << std::endl;
 	Sleep(2000);
 	Menu::showSetting();
 }
@@ -165,6 +171,11 @@ void Menu::runSetting() {
 
 	case 'D':
 		Menu::runSAVE();
+		break;
+
+	case 'E':
+		Menu::state = TICK;
+		TickMenu::showTickMenu();
 		break;
 	}
 

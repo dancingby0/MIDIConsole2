@@ -9,9 +9,10 @@
 #include "Midi.h"
 #include "VolumeMenu.h"
 #include "ModeMenu.h"
+#include "TickMenu.h"
 
 const enum STATE {
-	QUIT, MENU, SETTING, TIMBRE, VOLUME, MODE, MIDI,SAVE
+	QUIT, MENU, SETTING, TIMBRE, VOLUME, MODE, MIDI, SAVE, TICK
 };
 
 class Menu {

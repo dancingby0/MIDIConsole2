@@ -27,6 +27,12 @@ public:
 	// 设置调式
 	static void setMode(int);
 
+	// 获取读取的最小节拍数
+	static int getTick();
+
+	// 设置读取的最小节拍数
+	static void setTick(int);
+
 	// 读取配置文件
 	static void readConfigFile();
 
@@ -35,9 +41,10 @@ public:
 
 
 private:
-	static int timbre;// 音色
-	static int volume;// 响度
-	static int mode;// 调式
+	static int timbre;  // 音色
+	static int volume;  // 响度
+	static int mode;  // 调式
+	static int tick;  // 时间刻
 
 
 

@@ -1,6 +1,6 @@
 #include "Midi.h"
 
-const double Midi::TICK = 10;
+
 
 const int Midi::MAJOR[7] = { 2,2,1,2,2,2,1 };
 const int Midi::MINOR[7] = { 2,1,2,2,1,2,2 };
@@ -9,7 +9,7 @@ const std::array<int, 14> Midi::MODE = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13 };
 
 bool Midi::flag;
 
-bool Midi::hear_beat;
+int Midi::heart_beat=0;
 
 // 键表
 std::map<int, int> Midi::KeyMap;
@@ -31,6 +31,9 @@ std::vector<int> Midi::SoundList;
 
 // 存储1tick时玩家按下的键的id
 std::vector<int> Midi::KeyList;
+
+// 存储玩家实时按下的键的id
+std::vector<int> Midi::RealTimeKeyList;
 
 // 判定vector中是否存在一个值
 bool inline findVectorKey(std::vector<int>List, int value) {
@@ -107,7 +110,7 @@ std::vector<int>* Midi::getStopSoundList() {
 
 //获取MIDI电子琴的心跳
 bool Midi::getHeartBeat() {
-	return Midi::hear_beat;
+	return Midi::heart_beat;
 }
 
 // 获取MIDI电子琴当前的音色
@@ -131,6 +134,16 @@ void Midi::setVolume(int volume) {
 	MidiConfig::setVolume(volume);
 }
 
+// 获取时间刻
+int Midi::getTick() {
+	return MidiConfig::getTick();
+}
+
+// 设定时间刻
+void Midi::setTick(int tick) {
+	MidiConfig::setTick(tick);
+}
+
 // 生成键与音调的对应表
 void Midi::summonKeyMap() {
 	// 设定按下可发声的键
@@ -142,7 +155,6 @@ void Midi::summonKeyMap() {
 		for (int i = 1; i < keys.size(); i++) {
 			Midi::KeyMap[keys[i]] = Midi::KeyMap[keys[i - 1]] + Midi::MAJOR[(i - 1) % 7];
 		}
-
 	}
 	// 小调式
 	else {
@@ -222,42 +234,83 @@ void Midi::runMIDI() {
 	Midi::showCliPrompts();  // 显示提示语
 	midiOutShortMsg(Midi::handle, MidiConfig::getTimbre() << 8 | 0xC0);  // 设定音色
 	Midi::summonKeyMap();// 生成键与音符对应表
-	Midi::hear_beat = true;
+	Midi::heart_beat = 0;
+
+
+	// 外层循环,1ms循环一次,能够时时刻刻获取键
+	// 内层发声循环,遵循tick节拍,能够规范声音的发送.
 	while (Midi::flag) {
+
+		Midi::detectKeyboardInput();  // 检测键的实时输入
+
+		Midi::operateRealTimeKey();  // 对键操作(实时操作)
+
+		// 此处放置外接功能
 		Recording::runRecording();  // 运行录制系统
-		Midi::detectKeyboardInput();  // 检测键的输入
-		Midi::operateKey();  // 对键操作
-		
-		Sleep(Midi::TICK);
-		hear_beat = !hear_beat;
+
+
+		Midi::disposeRest();
+		heart_beat++;
+		Sleep(1);  // 外层循环1ms一次
 	}
 }
 
-// 检测键输入
+// 检测玩家实时输入的键
 void Midi::detectKeyboardInput() {
-	Midi::RunSoundList.clear();
-	Midi::StopSoundList.clear();
-	Midi::KeyList.clear(); // 当读取下1tick数据时,清空玩家键表
 	for (int key = 1; key < 256; key++) {
 		// 探测键是否按下(第16位为按下的判断位)
 		if (GetKeyState(key) & 0x8000) {
-			Midi::KeyList.push_back(key);
+			// 塞入实时监测的表
+			Midi::RealTimeKeyList.push_back(key);
+		}
+	}
+
+	for (int i : Midi::RealTimeKeyList) {
+		// 若1tick的键表中找不到实时检测的表中玩家的输入,塞进去
+		if (not findVectorKey(KeyList, i)) {
+			Midi::KeyList.push_back(i);
 		}
 	}
 }
 
-// 对玩家输入的键进行相应操作
-void Midi::operateKey() {
-	for (int i : Midi::KeyList) {
-		// 当键表里的键不在Sound里,说明第一次按下,发声
-		if (not findVectorKey(SoundList, i) and Midi::KeyMap.count(i) > 0) {
-			Midi::playSound(Midi::handle, Midi::KeyMap[i], MidiConfig::getVolume());
-			Midi::RunSoundList.push_back(KeyMap[i]);  // 将发声的音调存入KeyMap中
-			Midi::SoundList.push_back(i);
+// 处理杂项
+// 当heart_beat与tick相等时,处理1tick所有的事件
+void Midi::disposeRest() {
+	Midi::operateKey();  //执行一次tick时键的相应操作 发声,停声
+	Midi::RealTimeKeyList.clear(); // 当读取下一次实时数据时,清空玩家键表
+	
 
+	// 1tick结束,处理1tick发生的事件
+	if (Midi::heart_beat >= MidiConfig::getTick()) {
+		
+
+		// 这里插入1tick时要进行的其他功能(获取发声表和停声表)
+		//Recording::runRecording();
+
+		Midi::heart_beat = 0;  // 开始新的一次心跳
+		Midi::KeyList.clear(); // 当读取下1tick数据时,清空玩家键表
+		// 清空发声表,停声表
+		Midi::RunSoundList.clear();
+		Midi::StopSoundList.clear();
+	}
+}
+
+// 检测键实时的输入
+void Midi::detectRealTimeKeyList() {
+	
+	for (int i : Midi::RealTimeKeyList) {
+		// 若1tick的键表中找不到实时检测的表中玩家的输入,塞进去
+		if (not findVectorKey(KeyList, i)) {
+			Midi::KeyList.push_back(i);
 		}
+	}
+}
 
-		// 根据1tick内玩家按下的键执行操作
+// 根据玩家实时按下的键执行操作
+// 执行 : 退出
+void Midi::operateRealTimeKey() {
+	for (int i : Midi::RealTimeKeyList) {
+		
 		switch (i) {
 
 			// 按下数字9,则退出
@@ -271,16 +324,34 @@ void Midi::operateKey() {
 			break;
 		}
 	}
+}
+
+// 对玩家1tick输入的键进行相应操作
+// 执行 : 发声,停声
+void Midi::operateKey() {
+	for (int i : Midi::RealTimeKeyList) {
+		// 当键表里的键不在Sound里,说明第一次按下,发声
+		if (not findVectorKey(Midi::SoundList, i) and Midi::KeyMap.count(i) > 0) {
+			Midi::playSound(Midi::handle, Midi::KeyMap[i], MidiConfig::getVolume());
+			
+			if (not findVectorKey(Midi::RunSoundList, i)){
+				Midi::RunSoundList.push_back(KeyMap[i]);  // 将1tick内发声的音调存入RunSoundList中
+			}
+			Midi::SoundList.push_back(i);
+		}
+	}
 	// 当Sound表里的音调不在键表里,说明松开了,停声
 	for (int i : Midi::SoundList) {
-		if (not findVectorKey(KeyList, i)) {
+		if (not findVectorKey(Midi::RealTimeKeyList, i)) {
 			Midi::playSound(Midi::handle, Midi::KeyMap[i], 0);
-			Midi::StopSoundList.push_back(KeyMap[i]);  // 将停声的键存入KeyMap中
+			if (not findVectorKey(Midi::StopSoundList, KeyMap[i])) {
+				Midi::StopSoundList.push_back(KeyMap[i]);  // 将1tick内停声的音调存入StopSoundList中
+			}
 			[](std::vector<int>& List, int key) {List.erase(std::remove(List.begin(), List.end(), key), List.end()); }(Midi::SoundList, i);
 		}
-
 	}
 }
+
 // 显示提示语(CLI)
 void Midi::showCliPrompts() {
 	// 判定是否在命令行界面下

@@ -1,7 +1,7 @@
 #include "Recording.h"
 
-const double Recording::TICK = 10;
-int Recording::total_tick = 0;
+
+int Recording::total_time = 0;
 bool Recording::heart_beat = true;
 
 std::string Recording::file_name = "";
@@ -55,7 +55,7 @@ void Recording::runRecording() {
 
 		// 正在录制的状态且心跳相同时
 		if (Recording::getState() == Recording::STATE::RECORDING and Recording::heart_beat == Midi::getHeartBeat()) {
-			total_tick++;
+			total_time+=Midi::getTick();  // 增加总时长(此处单位为ms)
 			Recording::writeFile();
 		}
 	}
@@ -89,7 +89,7 @@ void Recording::switchPause() {
 
 
 void Recording::stopRecording() {
-	Recording::total_tick = 0;
+	Recording::total_time = 0;
 	Recording::file_name = "";
 	Recording::state = STATE::DONE;
 }
@@ -109,10 +109,34 @@ void Recording::newFile() {
 	bool flag_input = true;
 	while (flag_input) {
 		std::string input;
-		// 这里需要清空输入流
+		
+		
 		system("cls");
 		std::cout << "请输入保存的录制音频文件名(输入\":wq\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
-		std::cin >> input;
+		bool flag_input_0 = true;
+		while (flag_input_0) {
+			
+			for (char key = 1; key < 256; key++) {
+				// 探测键是否被按下
+				if (GetKeyState(key) & 0x8000 and (key <= 'z' and key >= 'a' or key <= 'Z' and key >= 'A' or key <= '9' and key >= '0' or key == ':')) {
+					std::cout << key;
+					input += key;
+					Sleep(100);
+				}
+				if (GetKeyState(key) & 0x8000 and key == VK_RETURN) {
+					flag_input_0 = false;
+					break;
+				}
+				if (GetKeyState(key) & 0x8000 and key == VK_BACK and not input.empty()) {
+					system("cls");
+					std::cout << "请输入保存的录制音频文件名(输入\":wq\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
+					input.pop_back();
+					std::cout << input;
+					Sleep(100);
+				}
+				
+			}
+		}
 		bool flag = true;
 		for (char i : input) {
 			if (not(i <= 9 and i >= 0 or i <= 'z' and i >= 'a' or i <= 'Z' and i >= 'A')) {
@@ -175,7 +199,7 @@ void Recording::writeFile() {
 
 		if (outputFile.is_open()) {
 			// 向文件中写入要发声的键
-			outputFile << "1 " << total_tick << " " << i << std::endl;
+			outputFile << "1 " << total_time << " " << i << std::endl;
 
 			outputFile.close();
 		}
@@ -192,7 +216,7 @@ void Recording::writeFile() {
 
 		if (outputFile.is_open()) {
 			// 向文件中写入要停止的键
-			outputFile << "0 " << total_tick << " " << i << std::endl;
+			outputFile << "0 " << total_time << " " << i << std::endl;
 
 			outputFile.close();
 		}
