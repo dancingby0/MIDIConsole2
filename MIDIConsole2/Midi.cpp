@@ -69,6 +69,10 @@ std::string UTF8ToGB(const char* str)
 	return result;
 }
 
+ HMIDIOUT Midi::getHandle() {
+	 return Midi::handle;
+}
+
 // 获取Midi的调式
 int Midi::getMode() {
 	return MidiConfig::getMode();
@@ -109,7 +113,7 @@ std::vector<int>* Midi::getStopSoundList() {
 	return &Midi::StopSoundList;
 }
 
-//获取MIDI电子琴的心跳
+// 获取MIDI电子琴的心跳
 bool Midi::getHeartBeat() {
 	return Midi::heart_beat;
 }

@@ -44,7 +44,7 @@ public:
 	static void setVolume(int voice);
 	static void setTick(int tick);
 	static int getTick();
-	
+	static HMIDIOUT getHandle();
 	
 	static int getMode();
 	static void setMode(int mode);
@@ -52,6 +52,10 @@ public:
 	static void writeConfigFile();
 	// 显示提示信息
 	static void showCliPrompts();
+	// 播放声音
+	static void playSound(HMIDIOUT handle, int frequency, int volume);
+	// 停止声音
+	static void stopSound(HMIDIOUT handle, int frequency);
 private:
 	// 常量
 	static const int MAJOR[7];
@@ -86,11 +90,7 @@ private:
 	// 初始化音色
 	static void initialTimbre();
 
-	// 播放声音
-	static void playSound(HMIDIOUT handle, int frequency, int volume);
-
-	// 停止声音
-	static void stopSound(HMIDIOUT handle, int frequency);
+	
 
 	// 生成键与音调的对应表
 	static void summonKeyMap();

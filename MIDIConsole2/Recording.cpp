@@ -181,8 +181,6 @@ void Recording::newFile() {
 				if (outputFile.is_open()) {
 					// 向文件中写入初始内容
 					outputFile << "timbre:" << Midi::getTimbre() << std::endl;
-					outputFile << "volume:" << Midi::getVolume() << std::endl;
-					outputFile << "mode:" << Midi::getMode() << std::endl;
 					outputFile.close();
 				}
 				else {
@@ -221,7 +219,7 @@ void Recording::writeFile() {
 
 		if (outputFile.is_open()) {
 			// 向文件中写入要发声的键
-			outputFile << "1 " << total_time << " " << i << std::endl;
+			outputFile << "1 " << total_time << " " << i << " " << Midi::getVolume() << std::endl;
 
 			outputFile.close();
 		}
@@ -241,7 +239,7 @@ void Recording::writeFile() {
 
 		if (outputFile.is_open()) {
 			// 向文件中写入要停止的键
-			outputFile << "0 " << total_time << " " << i << std::endl;
+			outputFile << "0 " << total_time << " " << i << " " << Midi::getVolume() << std::endl;
 
 			outputFile.close();
 		}

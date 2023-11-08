@@ -12,6 +12,7 @@ int ScoreMenu::timbre;
 int ScoreMenu::time;  // 目前时长
 int ScoreMenu::score_time;  // 谱子总时长
 
+std::vector<ScoreMenuSound> ScoreMenu::SoundList;
 std::vector<std::string> ScoreMenu::ScoreList;
 
 
@@ -38,12 +39,14 @@ void ScoreMenu::ReadScoreFile() {
 	}
 	else {
 		std::cerr << "文件夹 " << folderPath << " 不存在。" << std::endl;
-		Sleep(1000);
+
 		ScoreMenu::quitScoreMenu();
 		return;
 	}
 	if (file_count == 0) {
+		system("cls");
 		std::cout << "文件夹文件为空" << std::endl;
+
 		ScoreMenu::quitScoreMenu();
 		return;
 	}
@@ -99,8 +102,8 @@ void ScoreMenu::runScore() {
 		// 保存设置
 	case VK_RETURN:
 
-		Menu::setState(SETTING);
-		Menu::showSetting();
+		ScoreMenu::playScore();
+
 		break;
 	}
 }
@@ -127,7 +130,89 @@ void ScoreMenu::showPage() {
 
 // 离开菜单
 void ScoreMenu::quitScoreMenu() {
-
+	Sleep(1000);
+	system("cls");
 	Menu::setState(MENU);
 	Menu::showMenu();
+}
+
+void ScoreMenu::playScore() {
+	ScoreMenu::score_time = -1;
+	ScoreMenu::file_name = ScoreMenu::ScoreList.at(ScoreMenu::id_pointer);
+
+	// 创建文件输入流
+	std::ifstream inputFile("scores/" + file_name);
+	ScoreMenu::time = 0;
+	if (inputFile.is_open()) {
+		std::string line;
+
+		// 逐行读取文件内容
+		while (std::getline(inputFile, line)) {
+			// 在这里处理每一行的内容
+			disposeLine(line);
+			
+		}
+
+		// 关闭文件
+		inputFile.close();
+	}
+	else {
+		std::cerr << "无法打开文件: " << file_name << std::endl;
+		ScoreMenu::quitScoreMenu();
+		return ;
+	}
+
+	bool flag = true;
+	while (flag) {
+		Sleep(1);
+		ScoreMenu::time++;
+		for (ScoreMenuSound i : ScoreMenu::SoundList) {
+			if (i.time <= ScoreMenu::time and i.type == 0) {
+				Midi::stopSound(Midi::getHandle(), i.frequency);
+				[](std::vector<ScoreMenuSound>& List, ScoreMenuSound key) {
+					List.erase(std::remove(List.begin(), List.end(), key), List.end());
+					}(ScoreMenu::SoundList, i);
+			}
+			else if (i.time <= ScoreMenu::time and i.type == 1) {
+				Midi::playSound(Midi::getHandle(), i.frequency,i.volume);
+				[](std::vector<ScoreMenuSound>& List, ScoreMenuSound key) {
+					List.erase(std::remove(List.begin(), List.end(), key), List.end());
+					}(ScoreMenu::SoundList, i);
+			}
+		}
+		if (ScoreMenu::time > ScoreMenu::score_time) {
+			flag = false;
+			ScoreMenu::quitScoreMenu();
+		}
+	}
+
+}
+
+void ScoreMenu::disposeLine(std::string line) {
+	// 分割每一行的键值对
+	std::istringstream iss(line);
+	std::string key, value;
+	if (std::getline(iss, key, ':') && std::getline(iss, value)) {
+		if (key == "timbre") {
+			ScoreMenu::timbre = std::stoi(value);
+		}
+		else if (key == "total_time") {
+			ScoreMenu::score_time = std::stoi(value);
+		}
+	}
+	// 若无法分割,则为发声键
+	else {
+		int state = 0;
+		std::string num[] = { "" ,"","",""};
+		for (char i = 0; i < line.size(); i++){
+			if (line[i] <= '9' and line[i] >= '0') {
+				num[state] += line[i];
+			}
+			//如果是空格
+			else if(line[i]==' ') {
+				state += 1;
+			}
+		}
+		ScoreMenu::SoundList.push_back(ScoreMenuSound{ std::stoi(num[0]),std::stoi(num[1]),std::stoi(num[2]) ,std::stoi(num[3])});
+	}
 }
