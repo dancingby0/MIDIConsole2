@@ -54,7 +54,7 @@ void Recording::runRecording() {
 			// 更新面板
 			Midi::showCliPrompts();
 		}
-		else if (i == '9') {
+		else if (i == '9' and not (Recording::getState()==Recording::STATE::DONE)) {
 			Recording::stopRecording();
 		}
 		// 按下切换暂停键时

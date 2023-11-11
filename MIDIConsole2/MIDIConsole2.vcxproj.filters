@@ -13,14 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\Menu">
-      <UniqueIdentifier>{b44f6e1d-7824-4090-9a7d-ad56b5203275}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Midi">
       <UniqueIdentifier>{4ddf6b7f-4510-4e8b-8e4c-77438bdd2615}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\Record">
       <UniqueIdentifier>{7189b27e-fee9-45be-9ebe-345c4f038974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Record\Menu">
+      <UniqueIdentifier>{b44f6e1d-7824-4090-9a7d-ad56b5203275}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -28,19 +28,19 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Menu.cpp">
-      <Filter>源文件\Menu</Filter>
+      <Filter>源文件\Record\Menu</Filter>
     </ClCompile>
     <ClCompile Include="Midi.cpp">
       <Filter>源文件\Midi</Filter>
     </ClCompile>
     <ClCompile Include="TimbreMenu.cpp">
-      <Filter>源文件\Menu</Filter>
+      <Filter>源文件\Record\Menu</Filter>
     </ClCompile>
     <ClCompile Include="VolumeMenu.cpp">
-      <Filter>源文件\Menu</Filter>
+      <Filter>源文件\Record\Menu</Filter>
     </ClCompile>
     <ClCompile Include="ModeMenu.cpp">
-      <Filter>源文件\Menu</Filter>
+      <Filter>源文件\Record\Menu</Filter>
     </ClCompile>
     <ClCompile Include="MidiConfig.cpp">
       <Filter>源文件\Midi</Filter>
@@ -49,10 +49,10 @@
       <Filter>源文件\Record</Filter>
     </ClCompile>
     <ClCompile Include="TickMenu.cpp">
-      <Filter>源文件\Menu</Filter>
+      <Filter>源文件\Record\Menu</Filter>
     </ClCompile>
     <ClCompile Include="ScoreMenu.cpp">
-      <Filter>源文件\Menu</Filter>
+      <Filter>源文件\Record\Menu</Filter>
     </ClCompile>
     <ClCompile Include="StartAnimation.cpp">
       <Filter>源文件</Filter>
