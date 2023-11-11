@@ -130,7 +130,6 @@ void ScoreMenu::showPage() {
 
 // 离开菜单
 void ScoreMenu::quitScoreMenu() {
-	Sleep(1000);
 	system("cls");
 	Menu::setState(MENU);
 	Menu::showMenu();
@@ -182,8 +181,16 @@ void ScoreMenu::playScore() {
 		}
 		if (ScoreMenu::time > ScoreMenu::score_time) {
 			flag = false;
+			Sleep(1000);
+			midiOutShortMsg(Midi::getHandle(), 0x7BB0); //停止通道0
 			ScoreMenu::quitScoreMenu();
 		}
+
+			if (GetKeyState('Q') & 0x8000) {
+				midiOutShortMsg(Midi::getHandle(), 0x7BB0); //停止通道0
+				flag = false;
+				ScoreMenu::quitScoreMenu();
+			}
 	}
 
 }

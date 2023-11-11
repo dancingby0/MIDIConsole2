@@ -17,7 +17,7 @@ void StartAnimation::runStartAnimation() {
 				std::cout << "  ";  // 0对应两个空格
 			}
 			else if (c == '1') {
-				std::cout << "==";  // 1对应"=="
+				std::cout << "**";  // 1对应"=="
 			}
 			else {
 				std::cout << c;  // 其他字符原样输出

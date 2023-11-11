@@ -54,7 +54,9 @@ void Recording::runRecording() {
 			// 更新面板
 			Midi::showCliPrompts();
 		}
-
+		else if (i == '9') {
+			Recording::stopRecording();
+		}
 		// 按下切换暂停键时
 		else if (i == 'O' and not(Recording::getState() == Recording::STATE::DONE)) {
 			Recording::switchPause();
@@ -144,7 +146,7 @@ void Recording::newFile() {
 				}
 				if (GetKeyState(key) & 0x8000 and key == VK_BACK and not input.empty()) {
 					system("cls");
-					std::cout << "请输入保存的录制音频文件名(输入\":wq\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
+					std::cout << "请输入保存的录制音频文件名(输入\"QUIT\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
 					input.pop_back();
 					std::cout << input;
 					Sleep(200);
@@ -154,7 +156,7 @@ void Recording::newFile() {
 		}
 		bool flag = true;
 		for (char i : input) {
-			if (not(i <= 9 and i >= 0 or i <= 'z' and i >= 'a' or i <= 'Z' and i >= 'A')) {
+			if (not(i <= '9' and i >= '0' or i <= 'z' and i >= 'a' or i <= 'Z' and i >= 'A')) {
 				flag = false;
 			}
 		}
