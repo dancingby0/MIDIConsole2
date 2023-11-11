@@ -124,13 +124,13 @@ void Recording::newFile() {
 	bool flag_input = true;
 	while (flag_input) {
 		std::string input;
-		
-		
+
+
 		system("cls");
 		std::cout << "请输入保存的录制音频文件名(输入\"QUIT\"取消,仅可输入字母与数字,若目录中存在相同的文件则会被覆盖):" << std::endl;
 		bool flag_input_0 = true;
 		while (flag_input_0) {
-			
+
 			for (char key = 1; key < 256; key++) {
 				// 探测键是否被按下
 				if (GetKeyState(key) & 0x8000 and (key <= 'z' and key >= 'a' or key <= 'Z' and key >= 'A' or key <= '9' and key >= '0')) {
@@ -149,7 +149,7 @@ void Recording::newFile() {
 					std::cout << input;
 					Sleep(200);
 				}
-				
+
 			}
 		}
 		bool flag = true;
@@ -206,7 +206,7 @@ void Recording::newFile() {
 
 void Recording::writeFile() {
 
-	
+
 
 	// 读取发声的列表
 	for (int i : *Midi::getRunSoundList()) {

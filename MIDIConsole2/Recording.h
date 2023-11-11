@@ -18,7 +18,7 @@ public:
 	static void runRecordingTick();
 	// 运行录制系统
 	static void runRecording();
-	
+
 	// 获取录制状态
 	static int getState();
 private:

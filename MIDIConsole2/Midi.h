@@ -25,7 +25,7 @@ struct InstrumentData {
 	std::string Chinese_name;
 };
 
-class Midi{
+class Midi {
 public:
 
 	static bool findVectorKey(std::vector<int>List, int value);
@@ -45,7 +45,7 @@ public:
 	static void setTick(int tick);
 	static int getTick();
 	static HMIDIOUT getHandle();
-	
+
 	static int getMode();
 	static void setMode(int mode);
 	// 保存配置信息
@@ -90,7 +90,7 @@ private:
 	// 初始化音色
 	static void initialTimbre();
 
-	
+
 
 	// 生成键与音调的对应表
 	static void summonKeyMap();

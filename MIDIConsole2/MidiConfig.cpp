@@ -50,7 +50,7 @@ void MidiConfig::setTick(int tick) {
 // ¶ÁÈ¡ÅäÖÃÎÄ¼ş
 void MidiConfig::readConfigFile() {
 	std::string file_name = "config.txt";
-	
+
 	std::ifstream inputFile(file_name);
 
 	if (not inputFile) {

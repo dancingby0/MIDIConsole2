@@ -10,7 +10,7 @@
 #include "Midi.h"
 #include "Menu.h"
 
-class TimbreMenu{
+class TimbreMenu {
 public:
 	static void runTimbre();
 	static void showTimbre();

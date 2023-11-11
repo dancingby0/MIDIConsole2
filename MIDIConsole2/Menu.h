@@ -13,7 +13,7 @@
 #include "ScoreMenu.h"
 
 const enum STATE {
-	QUIT, MENU, SETTING, TIMBRE, VOLUME, MODE, MIDI, SAVE, TICK,SCOREMENU
+	QUIT, MENU, SETTING, TIMBRE, VOLUME, MODE, MIDI, SAVE, TICK, SCOREMENU
 };
 
 class Menu {
@@ -34,9 +34,6 @@ private:
 	static void changeMenu();
 	static void runMenu();
 	static void runSetting();
-
-
-
 	static void quit();
 };
 

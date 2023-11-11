@@ -11,7 +11,7 @@
 #include "Menu.h"
 #include "Midi.h"
 
-class ModeMenu{
+class ModeMenu {
 public:
 
 	static void setMode(int);

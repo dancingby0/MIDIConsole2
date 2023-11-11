@@ -7,7 +7,7 @@
 #include <regex>
 #include <string>
 
-class MidiConfig{
+class MidiConfig {
 public:
 	// 获取配置文件的音色
 	static int getTimbre();

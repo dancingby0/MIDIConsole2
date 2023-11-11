@@ -8,7 +8,7 @@
 #include "Menu.h"
 #include "Midi.h"
 
-class VolumeMenu{
+class VolumeMenu {
 public:
 	static void setVolume(int volume);
 	static void runVolumeMenu();
